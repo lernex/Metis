@@ -23,6 +23,7 @@ from .config import load_profile, load_yaml, repository_root
 from .download import run_download_task
 from .manifest import validate_manifest
 from .quality import evaluate_quality, priority_score
+from .stage_code import stage_code_sha256
 from .state import StateStore, atomic_json, utc_now
 from .tokenizer import train_tokenizer, validate_tokenizer
 from .selection import build_selection, hamilton_apportion, replay_quotas, unique_quotas
@@ -170,10 +171,84 @@ def _json_sha256(value: Any) -> str:
     ).hexdigest()
 
 
+# Fields that say who produced an artifact and when, rather than what it is.
+# Hashing them made a re-resolve or a rehandoff invalidate finished stage work
+# even when the resolved data was byte-identical.
+_PROVENANCE_KEYS: dict[str, tuple[str, ...]] = {
+    "sources.lock.json": (
+        "repository_commit",
+        "repository_dirty",
+        "resolved_at",
+        "lock_sha256",
+        "resolver_runtime",
+        "resolver_version",
+    ),
+    "build.inputs.json": ("created_at",),
+    "ACQUISITION_READY.json": (
+        "created_at",
+        "handoff_sha256",
+        "repository",
+        "acquisition_runtime",
+        "source_lock_sha256",
+        "lustre_root",
+    ),
+}
+
+# Scheduler keys that change how work is divided or buffered but cannot change
+# what the work produces. Everything else in the scheduler block stays bound,
+# including finder_tasks and bucket counts, which decide how records shard and
+# therefore which duplicate survives.
+_THROUGHPUT_ONLY_SCHEDULER_KEYS = frozenset(
+    {
+        "tasks_per_job",  # Slurm packaging
+        "time",  # Slurm wall clock
+        "maximum_open_files",  # writer handle pool; every record still routes to its own bucket
+        "external_sort_max_open_runs",  # merge fan-in; the merge is total either way
+    }
+)
+
+
+def _content_identity(value: Any, provenance: tuple[str, ...]) -> Any:
+    """Strip provenance from a state artifact so identity follows content."""
+
+    if not isinstance(value, dict):
+        return value
+    stripped = {key: item for key, item in value.items() if key not in provenance}
+    artifacts = stripped.get("artifacts")
+    if isinstance(artifacts, list):
+        # mtime_ns is rewritten by any re-download of identical bytes.
+        stripped["artifacts"] = [
+            {key: item for key, item in record.items() if key != "mtime_ns"}
+            if isinstance(record, dict)
+            else record
+            for record in artifacts
+        ]
+    return stripped
+
+
+def _output_relevant_scheduler(scheduler: Any) -> Any:
+    if isinstance(scheduler, dict):
+        return {
+            key: _output_relevant_scheduler(value)
+            for key, value in scheduler.items()
+            if key not in _THROUGHPUT_ONLY_SCHEDULER_KEYS
+        }
+    if isinstance(scheduler, list):
+        return [_output_relevant_scheduler(item) for item in scheduler]
+    return scheduler
+
+
 def _stage_execution_contract(
     profile: dict[str, Any], state: StateStore, stage: str
 ) -> str:
-    """Bind resumable CPU work to the exact immutable inputs and policies."""
+    """Bind resumable CPU work to the inputs and policies that shape its output.
+
+    Deliberately excluded: the repository commit, artifact timestamps, and
+    scheduler knobs that only affect throughput. Those made unrelated edits
+    invalidate finished work -- a fix to a dedup writer discarded a verified
+    normalize pass over 1,862 shards. Code identity is still bound, but per
+    stage, through stage_code_sha256.
+    """
 
     manifest = _manifest(profile)
     state_artifacts: dict[str, str] = {}
@@ -185,15 +260,20 @@ def _stage_execution_contract(
                 raise RuntimeError(f"Stage {stage} requires immutable state artifact {name}")
             state_artifacts[name] = "absent-by-test-profile-contract"
         else:
-            state_artifacts[name] = sha256_file(path)
+            state_artifacts[name] = _json_sha256(
+                _content_identity(
+                    json.loads(path.read_text(encoding="utf-8")), _PROVENANCE_KEYS[name]
+                )
+            )
     return _json_sha256(
         {
-            "schema": "metis.cpu-stage-execution/v1",
+            "schema": "metis.cpu-stage-execution/v2",
             "stage": stage,
             "release": manifest.get("release"),
             "manifest_contract_sha256": _manifest_contract_sha256(manifest),
             "state_artifacts": state_artifacts,
-            "scheduler": profile.get("scheduler", {}),
+            "stage_code_sha256": stage_code_sha256(stage),
+            "scheduler": _output_relevant_scheduler(profile.get("scheduler", {})),
             "gates": profile.get("gates", {}),
         }
     )

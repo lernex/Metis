@@ -66,7 +66,16 @@ def _repository_state() -> dict[str, Any]:
         )
     except (OSError, subprocess.CalledProcessError):
         return {"commit": "unknown", "dirty": True}
-    return {"commit": commit, "dirty": dirty}
+    from .stage_code import acquisition_code_sha256
+
+    # The commit stays for provenance and for reading a build's history. The
+    # fingerprint is what verification compares, so an unrelated commit no
+    # longer looks like the acquisition code changed underneath the downloads.
+    return {
+        "commit": commit,
+        "dirty": dirty,
+        "acquisition_code_sha256": acquisition_code_sha256(),
+    }
 
 
 def _iter_output_records(value: Any) -> Iterator[dict[str, Any]]:
@@ -619,8 +628,11 @@ def write_acquisition_handoff(
         )
     if lock.get("manifest_sha256") and lock.get("manifest_sha256") != _manifest_digest(manifest):
         raise RuntimeError("The source lock is bound to a different data manifest")
-    if lock.get("repository_commit") and lock.get("repository_commit") != repository["commit"]:
-        raise RuntimeError("The source lock is bound to a different repository commit")
+    # The lock's commit is provenance. Its binding to the manifest and the
+    # pinned runtime, checked directly above, is what decides which bytes the
+    # downloads contain; the commit alone does not. Enforcing it here meant the
+    # handoff could not be rebuilt after any commit, which is how a build gets
+    # stranded between a lock it cannot reuse and inputs it cannot re-verify.
     common_crawl_opt_out = _snapshot_final_common_crawl_policy(profile, manifest, root)
     final_opt_out_policy: OptOutPolicy | None = None
     if common_crawl_opt_out is not None:
@@ -764,10 +776,28 @@ def verify_acquisition_handoff(
     ):
         raise RuntimeError("Evaluation holdout provenance report changed after acquisition")
     if profile.get("gates", {}).get("require_repository_commit_match"):
+        from .stage_code import acquisition_code_sha256
+
         current = _repository_state()
         expected = handoff.get("repository", {})
-        if current["commit"] != expected.get("commit") or current["dirty"]:
-            raise RuntimeError("Rhea checkout does not match the clean acquisition repository commit")
+        if current["dirty"]:
+            raise RuntimeError("Rhea checkout is dirty; refusing to build against uncommitted code")
+        # The property worth protecting is that the acquisition artifacts were
+        # produced by the acquisition code now on disk -- not that nothing at
+        # all has been committed since. Comparing bare commits made every
+        # unrelated fix look like tampering. Handoffs written before this
+        # fingerprint existed fall back to the commit comparison.
+        recorded_fingerprint = expected.get("acquisition_code_sha256")
+        if recorded_fingerprint is None:
+            if current["commit"] != expected.get("commit"):
+                raise RuntimeError(
+                    "Rhea checkout does not match the clean acquisition repository commit"
+                )
+        elif recorded_fingerprint != acquisition_code_sha256():
+            raise RuntimeError(
+                "The acquisition code changed after the downloads were produced; "
+                "re-run acquisition so the handoff matches the code that made it"
+            )
     return {
         "ok": True,
         "schema": HANDOFF_SCHEMA,

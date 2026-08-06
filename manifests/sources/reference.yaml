@@ -6,7 +6,7 @@ sources:
     provenance: {generated: false, transformed: false, fresh: false}
     access: {type: huggingface, repo_id: HuggingFaceFW/finewiki, revision: 8bd13e72e6a002407649b3e898535f42ceb1aeb9, gated: false, allow_patterns: [data/enwiki/**]}
     license: {status: reviewed, expression: CC-BY-SA-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.20, compressed_bytes_per_token: 0.75}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.75}
     processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 90}
 
   - id: wikimedia_reference
@@ -22,7 +22,7 @@ sources:
       allow_patterns: [wikimedia-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: per-project-CC-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.75, compressed_bytes_per_token: 1.50}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 9.64, compressed_bytes_per_token: 1.50}
     processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 88}
 
   - id: public_domain_books_gutenberg
@@ -38,7 +38,7 @@ sources:
       allow_patterns: [project_gutenberg-dolma-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.34, compressed_bytes_per_token: 1.52}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 6.78, compressed_bytes_per_token: 1.52}
     processing: {quality_profile: longform_book_v1, dedup_namespace: global_books, priority: 84}
 
   - id: public_domain_books_pre1929
@@ -54,7 +54,7 @@ sources:
       allow_patterns: [public_library_1929_dolma-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.63, compressed_bytes_per_token: 1.43}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 9.4, compressed_bytes_per_token: 1.43}
     processing: {quality_profile: longform_book_v1, dedup_namespace: global_books, priority: 84}
 
   - id: common_pile_loc_reference
@@ -70,7 +70,7 @@ sources:
       allow_patterns: [loc_books_dolma-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 5.91, compressed_bytes_per_token: 1.44}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 12.0, compressed_bytes_per_token: 1.44}
     processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 80}
 
   - id: common_pile_doab_reference
@@ -86,7 +86,7 @@ sources:
       allow_patterns: [doab-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-per-record-CC-BY-or-CC-BY-SA}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.98, compressed_bytes_per_token: 1.12}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 6.05, compressed_bytes_per_token: 1.12}
     processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 84}
 
   - id: common_pile_libretexts_reference
@@ -102,7 +102,7 @@ sources:
       allow_patterns: [libretexts-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-per-record-open-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.769, compressed_bytes_per_token: 0.13}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.59, compressed_bytes_per_token: 0.13}
     processing: {quality_profile: textbook_v1, dedup_namespace: global_science_reference, priority: 88}
 
   - id: roots_stackexchange
@@ -118,7 +118,7 @@ sources:
       allow_patterns: [stackexchange-dolma-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: per-post-CC-BY-SA-version}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 7.46, compressed_bytes_per_token: 1.56}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 15.14, compressed_bytes_per_token: 1.56}
     processing: {quality_profile: explanatory_qa_v1, dedup_namespace: global_reference, priority: 92}
 
   - id: open_law_caselaw
@@ -134,7 +134,7 @@ sources:
       allow_patterns: [CAP-Dolma-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 8.38, compressed_bytes_per_token: 1.25}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 17.01, compressed_bytes_per_token: 1.25}
     processing: {quality_profile: legal_primary_v1, dedup_namespace: global_legal, priority: 86}
 
   - id: open_law_usgpo
@@ -150,7 +150,7 @@ sources:
       allow_patterns: [usgpo-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-US-government-record-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 12.86, compressed_bytes_per_token: 1.10}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 26.11, compressed_bytes_per_token: 1.10}
     processing: {quality_profile: legal_primary_v1, dedup_namespace: global_legal, priority: 86}
 
   - id: nemotron_legal_v1
@@ -194,7 +194,7 @@ sources:
         - 'Nemotron-Pretraining-Legal-eCFR/*.parquet'
         - 'Nemotron-Pretraining-Legal-eCFR-QA/*.parquet'
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.35, compressed_bytes_per_token: 0.75}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.75}
     processing: {quality_profile: legal_synthetic_v1, dedup_namespace: synthetic_legal, priority: 75}
 
   - id: metis_govreference_uk_hansard
@@ -221,7 +221,7 @@ sources:
       own id and sitting date locate it within that publication.
     attestations:
       canonical_url: https://hansard.parliament.uk/
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.60, compressed_bytes_per_token: 1.28}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 1.28}
     processing: {quality_profile: official_docs_v1, dedup_namespace: global_reference, priority: 90}
 
   - id: metis_govreference_regulations
@@ -237,5 +237,5 @@ sources:
       allow_patterns: [regulations-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-government-record-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.55, compressed_bytes_per_token: 0.90}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 5.18, compressed_bytes_per_token: 0.90}
     processing: {quality_profile: official_docs_v1, dedup_namespace: global_reference, priority: 90}

@@ -77,7 +77,7 @@ sources:
     # attaches. Acquiring a licence-bearing variant of The Stack would remove
     # the limitation and is the right move for 1.7.
     license: {status: reviewed, expression: permissive-only-The-Stack-v1.2-filtered}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.00, compressed_bytes_per_token: 0.65}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.65}
     processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 90}
 
   - id: github_code_clean
@@ -92,7 +92,7 @@ sources:
       gated: false
       allow_patterns: [data/*.parquet]
     license: {status: reviewed, expression: repository-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.00, compressed_bytes_per_token: 0.62}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.62}
     processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 78}
 
   - id: nemotron_cc_code_v1
@@ -107,7 +107,7 @@ sources:
       gated: manual
       allow_patterns: [data/**]
     license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.30, compressed_bytes_per_token: 0.75}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.75}
     processing: {quality_profile: code_interleaved_v1, dedup_namespace: global_code_web, priority: 95}
 
   # metis_freshgithub_2025_26 (18B: 10/6/2) held the largest share of the 35B
@@ -161,7 +161,7 @@ sources:
     provenance: {generated: false, transformed: false, fresh: false}
     access: {type: canonical_registry, registry: manifests/registries/systems_formal.yaml, selector: systems_code}
     license: {status: reviewed, expression: canonical-source-license}
-    acquisition: {driver: canonical_git, candidate_multiplier: 1.00, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: canonical_git, candidate_multiplier: 2.03, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 94}
 
   - id: verified_synthetic_code
@@ -188,5 +188,5 @@ sources:
       for every row, and is stated by the publisher rather than inferred here.
     attestations:
       genealogy: {generator_models: [Qwen3-32B, Mixtral-8x22B]}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.40, compressed_bytes_per_token: 0.75}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.84, compressed_bytes_per_token: 0.75}
     processing: {quality_profile: synthetic_code_v1, dedup_namespace: synthetic_code, priority: 85}

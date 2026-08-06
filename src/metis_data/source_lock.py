@@ -130,11 +130,13 @@ def _validate_existing_lock(
     commit, dirty = _repository_commit()
     if profile.get("gates", {}).get("require_clean_repository") and dirty:
         raise RuntimeError("Refusing to reuse the source lock from a dirty repository checkout")
-    if existing.get("repository_commit") != commit:
-        raise RuntimeError(
-            "The repository commit changed after the immutable source lock was created; "
-            "resume with the original commit or create a new data release"
-        )
+    # The commit is recorded as provenance, not enforced as identity. What the
+    # lock must still agree with is the manifest and the pinned runtime, both
+    # checked above; those are what decide which bytes get downloaded. Refusing
+    # on the commit alone meant no code fix could ever be deployed into a
+    # running build, because re-resolving at the new commit rewrote the lock and
+    # invalidated every completed stage. Stage-level code identity is enforced
+    # where it belongs, per stage, by stage_code_sha256.
     return existing
 
 

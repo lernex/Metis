@@ -6,7 +6,7 @@ sources:
     provenance: {generated: true, transformed: true, fresh: false}
     access: {type: huggingface, repo_id: nvidia/Nemotron-Pretraining-Specialized-v1.2, revision: 807afc1fa65c441d46ebc7d9b95295a35499a527, gated: false, allow_patterns: [Nemotron-Pretraining-Fact-Seeking/**]}
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.25, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.54, compressed_bytes_per_token: 0.78}
     # Fact-seeking rows are short question-and-answer pairs generated from a
     # prompt, not from a grounding document, so grounded_synthetic_v1 asked two
     # things of them that are not true: a source document they never had, and a
@@ -20,7 +20,7 @@ sources:
     provenance: {generated: true, transformed: true, fresh: false}
     access: {type: huggingface, repo_id: nvidia/Nemotron-CC-v2.1, revision: ba6f2aaef7ada865bb08fc08640ca292150097db, gated: manual, allow_patterns: [High-Quality-DQA/**]}
     license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.20, compressed_bytes_per_token: 0.75}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.75}
     processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 95}
 
   - id: nemotron_specialized_reasoning_scicode
@@ -35,7 +35,7 @@ sources:
       gated: false
       allow_patterns: [Nemotron-Pretraining-InfiniByte-Reasoning/**, Nemotron-Pretraining-Scientific-Coding/**]
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.45, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.78}
     # The Nemotron-Pretraining-Specialized-v1 card documents the generators for
     # the InfiniByte-Reasoning and Scientific-Coding subsets (QwQ-32B,
     # Qwen3-235B-A22B-Thinking-2507, Qwen3-235B-A22B) and does not document any
@@ -56,7 +56,7 @@ sources:
       gated: false
       allow_patterns: [Nemotron-Pretraining-Wiki-Rewrite/**]
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.35, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.78}
     processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 85}
 
   - id: cosmopedia_v2
@@ -110,7 +110,7 @@ sources:
     # 104 shards, about 2.4B candidate tokens against an 8B budget, and reported
     # candidate_target_met. 122GB is on the Hub, so the correction costs only
     # download bytes.
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.45, compressed_bytes_per_token: 3.86}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 3.86}
     processing: {quality_profile: textbook_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 82}
 
   - id: nemotron_math_textbooks
@@ -125,7 +125,7 @@ sources:
       gated: false
       allow_patterns: [Nemotron-Pretraining-Math-Textbooks/**]
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.50, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.78}
     processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 94}
 
   - id: nemotron_rqa_verified_reasoning
@@ -140,7 +140,7 @@ sources:
       gated: false
       allow_patterns: [Nemotron-Pretraining-RQA/**]
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.55, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.78}
     # See nemotron_specialized_reasoning_scicode. The subset name says
     # "verified"; the dataset card documents no verification step. The id is
     # left alone because it is bound into dedup and holdout state, but the

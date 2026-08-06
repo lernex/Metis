@@ -6,7 +6,7 @@ sources:
     provenance: {generated: false, transformed: true, fresh: false}
     access: {type: huggingface, repo_id: nvidia/Nemotron-CC-v2.1, revision: ba6f2aaef7ada865bb08fc08640ca292150097db, gated: manual, allow_patterns: [High-Quality-Translated-To-English/**]}
     license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.45, compressed_bytes_per_token: 0.75}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.75}
     processing: {quality_profile: translated_english_v1, dedup_namespace: global_multilingual, priority: 90}
 
   - id: fineweb2_native_multilingual
@@ -16,5 +16,5 @@ sources:
     provenance: {generated: false, transformed: false, fresh: false}
     access: {type: huggingface, repo_id: HuggingFaceFW/fineweb-2, revision: af9c13333eb981300149d5ca60a8e9d659b276b9, gated: false, allow_patterns: [data/**]}
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.34, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 6.78, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: multilingual_native_v1, dedup_namespace: global_multilingual, priority: 85}

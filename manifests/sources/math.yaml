@@ -11,7 +11,7 @@ sources:
       gated: auto
       allow_patterns: [4plus/**]
     license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.20, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.78}
     processing: {quality_profile: math_4plus_v1, dedup_namespace: global_math_web, priority: 100}
 
   - id: nemotron_cc_math_unique_3
@@ -26,7 +26,7 @@ sources:
       gated: auto
       allow_patterns: [3/**]
     license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.30, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.78}
     processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 85}
 
   - id: nemotron_math_proofs
@@ -37,7 +37,7 @@ sources:
     # This immutable release contains data/lean.jsonl; no Parquet payload exists.
     access: {type: huggingface, repo_id: nvidia/Nemotron-Math-Proofs-v1, revision: 97229c590831adfe96202f5cd071d444d535bf91, gated: false, allow_patterns: ['data/*.jsonl']}
     license: {status: reviewed, expression: CC-BY-SA-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.35, compressed_bytes_per_token: 0.75}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.75}
     processing: {quality_profile: proof_v1, dedup_namespace: global_math, priority: 95}
 
   - id: proof_pile2_math
@@ -81,7 +81,7 @@ sources:
     # that restate it are being generous, not authoritative, and demanding it of
     # the rows that do not restate it verifies nothing.
     license: {status: reviewed, expression: algebraic-stack-permissive-per-component}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.50, compressed_bytes_per_token: 0.65}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.65}
     processing: {quality_profile: proof_v1, dedup_namespace: global_math_science, priority: 90}
 
   - id: finemath_unique
@@ -99,7 +99,7 @@ sources:
     # matches nothing under this repo's fnmatch-based matcher.
     access: {type: huggingface, repo_id: HuggingFaceTB/finemath, revision: e92b25a616738fe95dc186b64dfb19f9c8525594, gated: false, allow_patterns: ['finemath-3plus/**']}
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.55, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 80}
 
   - id: megamath_unique
@@ -122,7 +122,7 @@ sources:
     # publisher's over the compilation, declared ODC-By on the dataset card --
     # the same shape already recorded for metis_freshweb_2025 (FineWeb).
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.55, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 78}
 
   - id: openwebmath_unique
@@ -138,7 +138,7 @@ sources:
     # ODC-By-1.0 and that users should also abide by the Common Crawl terms of
     # use, which is a corpus-level grant, not a per-record one.
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.70, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.45, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 70}
 
   - id: formal_theorem_corpora
@@ -162,5 +162,5 @@ sources:
       not establish it.
     attestations:
       parser_or_compiler_passed: true
-    acquisition: {driver: canonical_git, candidate_multiplier: 1.00, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: canonical_git, candidate_multiplier: 2.03, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: formal_proof_v1, dedup_namespace: global_formal, priority: 98}

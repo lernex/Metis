@@ -6,7 +6,7 @@ sources:
     provenance: {generated: false, transformed: false, fresh: false}
     access: {type: huggingface, repo_id: HuggingFaceFW/finepdfs-edu, revision: 9cfabe2127faca99b3d5c4dc6d1fcb397399ebde, gated: false, allow_patterns: [data/eng_Latn/**]}
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.40, compressed_bytes_per_token: 0.78}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.84, compressed_bytes_per_token: 0.78}
     processing: {quality_profile: pdf_technical_v1, dedup_namespace: global_pdf_web, priority: 92}
 
   - id: pes2o
@@ -23,7 +23,7 @@ sources:
     # releases peS2o under ODC-By; the S2ORC papers behind it keep their own
     # terms, which this expression does not and cannot enumerate.
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.30, compressed_bytes_per_token: 0.70}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.70}
     processing: {quality_profile: scientific_paper_v1, dedup_namespace: global_science, priority: 92}
 
   - id: pmc_open_access
@@ -39,7 +39,7 @@ sources:
       allow_patterns: [licensed_pubmed-*.json.gz]
       take_all: true
     license: {status: reviewed, expression: Common-Pile-per-record-open-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.63, compressed_bytes_per_token: 1.18}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 5.34, compressed_bytes_per_token: 1.18}
     processing: {quality_profile: biomedical_paper_v1, dedup_namespace: global_science, priority: 90}
 
   - id: proof_pile2_science
@@ -66,7 +66,7 @@ sources:
     # this line is a 20% -> 0% regression.
     access: {type: huggingface, repo_id: EleutherAI/proof-pile-2, revision: 901a9273a770e9d4138c5ddd91802f9c5c6cdc4b, gated: false, allow_patterns: ['arxiv/train/*.jsonl.zst']}
     license: {status: reviewed, expression: arxiv-mixed-per-paper}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.30, compressed_bytes_per_token: 0.65}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.65}
     processing: {quality_profile: scientific_paper_v1, dedup_namespace: global_math_science, priority: 84}
 
   - id: openstax
@@ -92,7 +92,7 @@ sources:
     # in normalization_evidence.py is left in place: where the statement is
     # present it is still recorded as the stronger per-book evidence.
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.00, compressed_bytes_per_token: 4.00}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.03, compressed_bytes_per_token: 4.00}
     processing: {quality_profile: textbook_v1, dedup_namespace: global_science_reference, priority: 96}
 
   # metis_freshscience_2025_26 (10B: 6/3/1) and metis_freshdocs_2025_26
@@ -117,5 +117,5 @@ sources:
       gated: false
       allow_patterns: [USPTO-*.json.gz]
     license: {status: reviewed, expression: Common-Pile-USPTO-public-domain-record}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.80, compressed_bytes_per_token: 0.90}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.65, compressed_bytes_per_token: 0.90}
     processing: {quality_profile: engineering_report_v1, dedup_namespace: global_science, priority: 72}

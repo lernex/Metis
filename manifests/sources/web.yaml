@@ -11,7 +11,7 @@ sources:
       gated: manual
       allow_patterns: [High-Quality/**, Medium-High-Quality/**]
     license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.30, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.64, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 90}
 
   - id: nemotron_cc_v21_organic
@@ -26,7 +26,7 @@ sources:
       gated: manual
       allow_patterns: [High-Quality/**, Medium-High-Quality/**]
     license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.60, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 95}
 
   - id: fineweb_edu
@@ -41,7 +41,7 @@ sources:
       gated: false
       allow_patterns: [data/**]
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.35, compressed_bytes_per_token: 0.70}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.70}
     processing: {quality_profile: web_edu_v1, dedup_namespace: global_web, priority: 88}
 
   - id: dclm_baseline
@@ -61,7 +61,7 @@ sources:
     # publisher's over the compilation -- CC-BY-4.0 on the dataset card --
     # which is the same shape already recorded for metis_freshweb_2025.
     license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.50, compressed_bytes_per_token: 0.68}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.68}
     processing: {quality_profile: web_general_v1, dedup_namespace: global_web, priority: 75}
 
   - id: essential_web
@@ -78,7 +78,7 @@ sources:
     # See dclm_baseline. The card states Essential-Web contributions are made
     # available under the ODC attribution license.
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.45, compressed_bytes_per_token: 0.70}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.70}
     processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 82}
 
   - id: txt360
@@ -99,7 +99,7 @@ sources:
     # is Common Crawl derived and carries no per-record license, so it would
     # have failed identically once its normalization tasks were scheduled.
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.40, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.84, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 80}
 
   - id: zyda2_unique
@@ -115,7 +115,7 @@ sources:
       allow_patterns: [data/**]
     # See dclm_baseline. The card states Zyda-2 is released under ODC-BY.
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.60, compressed_bytes_per_token: 0.72}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 0.72}
     processing: {quality_profile: web_general_v1, dedup_namespace: global_web, priority: 70}
 
   # Was metis_freshweb_2026: a common_crawl_ranges build over the five 2026
@@ -165,7 +165,7 @@ sources:
       cutoff_start: '2025-01-01'
       cutoff_end: '2025-06-30'
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 1.50, compressed_bytes_per_token: 1.10}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 1.10}
     processing: {quality_profile: fresh_web_2026_v1, dedup_namespace: global_web, priority: 100}
 
   - id: fineweb_diversity_tail
@@ -180,5 +180,5 @@ sources:
       gated: false
       allow_patterns: [data/**]
     license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.00, compressed_bytes_per_token: 0.70}
+    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.70}
     processing: {quality_profile: web_diversity_v1, dedup_namespace: global_web, priority: 55}
