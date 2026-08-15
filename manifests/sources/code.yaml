@@ -17,48 +17,22 @@ sources:
   # near-dedup, PII redaction, and permissive-license filtering -- so the
   # per-record license question is already settled upstream rather than being
   # rediscovered one archive at a time.
-  - id: starcoder_permissive_code
-    label: StarCoderData permissive repository code across 88 languages
-    category: code
-    phase_tokens: {phase_a: 47910000000, phase_b: 28928000000, phase_c: 8982000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: bigcode/starcoderdata
-      revision: 9fc30b578cedaec69e47302df72cf00feed7c8c4
-      gated: auto
+- id: starcoder_permissive_code
+  label: StarCoderData permissive repository code across 88 languages
+  category: code
+  phase_tokens: {phase_a: 53715642107, phase_b: 32826225733, phase_c: 8552282610}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: bigcode/starcoderdata
+    revision: 9fc30b578cedaec69e47302df72cf00feed7c8c4
+    gated: auto
       # Language subtrees only. The repository also publishes
       # github-issues-filtered-structured, git-commits-cleaned, and two jupyter
       # subsets; issues would double-count metis_freshengineering_discussions
       # and commit diffs are not source files, so all four are excluded by
       # naming what is wanted rather than by a wildcard.
-      allow_patterns: [
-        ada/*.parquet, agda/*.parquet, alloy/*.parquet, antlr/*.parquet,
-        applescript/*.parquet, assembly/*.parquet, augeas/*.parquet, awk/*.parquet,
-        batchfile/*.parquet, bluespec/*.parquet, c/*.parquet, c-sharp/*.parquet,
-        clojure/*.parquet, cmake/*.parquet, coffeescript/*.parquet,
-        common-lisp/*.parquet, cpp/*.parquet, css/*.parquet, cuda/*.parquet,
-        dart/*.parquet, dockerfile/*.parquet, elixir/*.parquet, elm/*.parquet,
-        emacs-lisp/*.parquet, erlang/*.parquet, f-sharp/*.parquet,
-        fortran/*.parquet, glsl/*.parquet, go/*.parquet, groovy/*.parquet,
-        haskell/*.parquet, html/*.parquet, idris/*.parquet, isabelle/*.parquet,
-        java/*.parquet, java-server-pages/*.parquet, javascript/*.parquet,
-        json/*.parquet, julia/*.parquet, kotlin/*.parquet, lean/*.parquet,
-        literate-agda/*.parquet, literate-coffeescript/*.parquet,
-        literate-haskell/*.parquet, lua/*.parquet, makefile/*.parquet,
-        maple/*.parquet, markdown/*.parquet, mathematica/*.parquet,
-        matlab/*.parquet, ocaml/*.parquet, pascal/*.parquet, perl/*.parquet,
-        php/*.parquet, powershell/*.parquet, prolog/*.parquet,
-        protocol-buffer/*.parquet, python/*.parquet, r/*.parquet,
-        racket/*.parquet, restructuredtext/*.parquet, rmarkdown/*.parquet,
-        ruby/*.parquet, rust/*.parquet, sas/*.parquet, scala/*.parquet,
-        scheme/*.parquet, shell/*.parquet, smalltalk/*.parquet,
-        solidity/*.parquet, sparql/*.parquet, sql/*.parquet, stan/*.parquet,
-        standard-ml/*.parquet, stata/*.parquet, systemverilog/*.parquet,
-        tcl/*.parquet, tcsh/*.parquet, tex/*.parquet, thrift/*.parquet,
-        typescript/*.parquet, verilog/*.parquet, vhdl/*.parquet,
-        visual-basic/*.parquet, xslt/*.parquet, yacc/*.parquet, yaml/*.parquet,
-        zig/*.parquet]
+    allow_patterns: [ada/*.parquet, agda/*.parquet, alloy/*.parquet, antlr/*.parquet, applescript/*.parquet, assembly/*.parquet, augeas/*.parquet, awk/*.parquet, batchfile/*.parquet, bluespec/*.parquet, c/*.parquet, c-sharp/*.parquet, clojure/*.parquet, cmake/*.parquet, coffeescript/*.parquet, common-lisp/*.parquet, cpp/*.parquet, css/*.parquet, cuda/*.parquet, dart/*.parquet, dockerfile/*.parquet, elixir/*.parquet, elm/*.parquet, emacs-lisp/*.parquet, erlang/*.parquet, f-sharp/*.parquet, fortran/*.parquet, glsl/*.parquet, go/*.parquet, groovy/*.parquet, haskell/*.parquet, html/*.parquet, idris/*.parquet, isabelle/*.parquet, java/*.parquet, java-server-pages/*.parquet, javascript/*.parquet, json/*.parquet, julia/*.parquet, kotlin/*.parquet, lean/*.parquet, literate-agda/*.parquet, literate-coffeescript/*.parquet, literate-haskell/*.parquet, lua/*.parquet, makefile/*.parquet, maple/*.parquet, markdown/*.parquet, mathematica/*.parquet, matlab/*.parquet, ocaml/*.parquet, pascal/*.parquet, perl/*.parquet, php/*.parquet, powershell/*.parquet, prolog/*.parquet, protocol-buffer/*.parquet, python/*.parquet, r/*.parquet, racket/*.parquet, restructuredtext/*.parquet, rmarkdown/*.parquet, ruby/*.parquet, rust/*.parquet, sas/*.parquet, scala/*.parquet, scheme/*.parquet, shell/*.parquet, smalltalk/*.parquet, solidity/*.parquet, sparql/*.parquet, sql/*.parquet, stan/*.parquet, standard-ml/*.parquet, stata/*.parquet, systemverilog/*.parquet, tcl/*.parquet, tcsh/*.parquet, tex/*.parquet, thrift/*.parquet, typescript/*.parquet, verilog/*.parquet, vhdl/*.parquet, visual-basic/*.parquet, xslt/*.parquet, yacc/*.parquet, yaml/*.parquet, zig/*.parquet]
     # Was per_record_required/repository-license. StarCoderData's language
     # shards carry max_stars_repo_path/name/count, id and content -- the
     # per-file licence is not among them, so no row could satisfy that status.
@@ -76,39 +50,39 @@ sources:
     # weaker position than the ODC-By web sources, where no such obligation
     # attaches. Acquiring a licence-bearing variant of The Stack would remove
     # the limitation and is the right move for 1.7.
-    license: {status: reviewed, expression: permissive-only-The-Stack-v1.2-filtered}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.65}
-    processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 90}
+  license: {status: reviewed, expression: permissive-only-The-Stack-v1.2-filtered}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.65}
+  processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 90}
 
-  - id: github_code_clean
-    label: CodeParrot cleaned GitHub source files
-    category: code
-    phase_tokens: {phase_a: 22000000000, phase_b: 13000000000, phase_c: 3000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: codeparrot/github-code-clean
-      revision: c48d40f9e70f0196f8236901ee35807f7d6c44c0
-      gated: false
-      allow_patterns: [data/*.parquet]
-    license: {status: reviewed, expression: repository-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.62}
-    processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 78}
+- id: github_code_clean
+  label: CodeParrot cleaned GitHub source files
+  category: code
+  phase_tokens: {phase_a: 7131283551, phase_b: 4358006614, phase_c: 1135400227}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: codeparrot/github-code-clean
+    revision: c48d40f9e70f0196f8236901ee35807f7d6c44c0
+    gated: false
+    allow_patterns: [data/*.parquet]
+  license: {status: reviewed, expression: repository-license}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.62}
+  processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 78}
 
-  - id: nemotron_cc_code_v1
-    label: Nemotron-CC-Code tutorials, docs, snippets, and code-text interleaving
-    category: code
-    phase_tokens: {phase_a: 18000000000, phase_b: 10000000000, phase_c: 3000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-CC-Code-v1
-      revision: 5c5bebce9f9a85c237d63b2afad516ee532f950f
-      gated: manual
-      allow_patterns: [data/**]
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.75}
-    processing: {quality_profile: code_interleaved_v1, dedup_namespace: global_code_web, priority: 95}
+- id: nemotron_cc_code_v1
+  label: Nemotron-CC-Code tutorials, docs, snippets, and code-text interleaving
+  category: code
+  phase_tokens: {phase_a: 14867749888, phase_b: 9085847153, phase_c: 2367154031}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-CC-Code-v1
+    revision: 5c5bebce9f9a85c237d63b2afad516ee532f950f
+    gated: manual
+    allow_patterns: [data/**]
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.75}
+  processing: {quality_profile: code_interleaved_v1, dedup_namespace: global_code_web, priority: 95}
 
   # metis_freshgithub_2025_26 (18B: 10/6/2) held the largest share of the 35B
   # software freshness bucket and was withdrawn for the 1.6 generation. Its
@@ -154,39 +128,39 @@ sources:
   # below, both already on disk. The code category total is unchanged at 160B
   # and every per-phase total is exact. See manifests/sources/web.yaml.
 
-  - id: metis_systems_formal
-    label: CUDA, Triton, SQL, shell, build systems, Lean, and Coq
-    category: code
-    phase_tokens: {phase_a: 90000000, phase_b: 72000000, phase_c: 18000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access: {type: canonical_registry, registry: manifests/registries/systems_formal.yaml, selector: systems_code}
-    license: {status: reviewed, expression: canonical-source-license}
-    acquisition: {driver: canonical_git, candidate_multiplier: 2.03, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 94}
+- id: metis_systems_formal
+  label: CUDA, Triton, SQL, shell, build systems, Lean, and Coq
+  category: code
+  phase_tokens: {phase_a: 103635744, phase_b: 63332954, phase_c: 16500264}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access: {type: canonical_registry, registry: manifests/registries/systems_formal.yaml, selector: systems_code}
+  license: {status: reviewed, expression: canonical-source-license}
+  acquisition: {driver: canonical_git, candidate_multiplier: 2.03, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: repository_code_v1, dedup_namespace: global_code, priority: 94}
 
-  - id: verified_synthetic_code
-    label: NVIDIA verified synthetic code review, repair, rewrite, QA, and transpilation
-    category: code
-    phase_tokens: {phase_a: 2000000000, phase_b: 3000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-Pretraining-Code-v2
-      revision: 7b1a453d43e3c0df9749834b04f1a9510c0f5e5b
-      gated: manual
-      allow_patterns: [Synthetic-Code/**]
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+- id: verified_synthetic_code
+  label: NVIDIA verified synthetic code review, repair, rewrite, QA, and transpilation
+  category: code
+  phase_tokens: {phase_a: 3433055138, phase_b: 2097978140, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-Pretraining-Code-v2
+    revision: 7b1a453d43e3c0df9749834b04f1a9510c0f5e5b
+    gated: manual
+    allow_patterns: [Synthetic-Code/**]
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
     # These rows carry content, language, seed_source, and an id -- no
     # models_used column, unlike every other Nemotron subset -- so genealogy
     # could not be read per record even though it is documented for the whole
     # subset. Execution verification is not documented at all and is therefore
     # not attested; the profile no longer asks for it.
-    attestation_basis: >-
-      The Nemotron-Pretraining-Code-v2 dataset card names the models that
-      generated the Synthetic-Code subset: Qwen3-32B and Mixtral-8x22B. The
-      generator is a property of how the pinned subset was produced, identical
-      for every row, and is stated by the publisher rather than inferred here.
-    attestations:
-      genealogy: {generator_models: [Qwen3-32B, Mixtral-8x22B]}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.84, compressed_bytes_per_token: 0.75}
-    processing: {quality_profile: synthetic_code_v1, dedup_namespace: synthetic_code, priority: 85}
+  attestation_basis: >-
+    The Nemotron-Pretraining-Code-v2 dataset card names the models that
+    generated the Synthetic-Code subset: Qwen3-32B and Mixtral-8x22B. The
+    generator is a property of how the pinned subset was produced, identical
+    for every row, and is stated by the publisher rather than inferred here.
+  attestations:
+    genealogy: {generator_models: [Qwen3-32B, Mixtral-8x22B]}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.84, compressed_bytes_per_token: 0.75}
+  processing: {quality_profile: synthetic_code_v1, dedup_namespace: synthetic_code, priority: 85}

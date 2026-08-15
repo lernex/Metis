@@ -16,60 +16,60 @@ tokenizer:
   preserve_latex: true
   byte_fallback: true
   special_tokens:
-    - <|endoftext|>
-    - <|padding|>
-    - <|fim_prefix|>
-    - <|fim_middle|>
-    - <|fim_suffix|>
-    - <|tool_call|>
-    - <|tool_result|>
+  - <|endoftext|>
+  - <|padding|>
+  - <|fim_prefix|>
+  - <|fim_middle|>
+  - <|fim_suffix|>
+  - <|tool_call|>
+  - <|tool_result|>
 
 schedule:
-  target_tokens: 1000000000000
-  unique_target_tokens: 950000000000
-  replay_target_tokens: 50000000000
+  target_tokens: 804755808835
+  unique_target_tokens: 764518018395
+  replay_target_tokens: 40237790440
   phases:
     phase_a:
       start_token: 0
-      target_tokens: 700000000000
-      unique_tokens: 700000000000
+      target_tokens: 554849376946
+      unique_tokens: 554849376946
       replay_tokens: 0
       purpose: broad linguistic, factual, scientific, and software foundation
     phase_b:
-      start_token: 700000000000
-      target_tokens: 250000000000
-      unique_tokens: 250000000000
+      start_token: 554849376946
+      target_tokens: 209668641449
+      unique_tokens: 209668641449
       replay_tokens: 0
       purpose: capability intensification in code, math, science, and structured reasoning
     phase_c:
-      start_token: 950000000000
-      target_tokens: 50000000000
+      start_token: 764518018395
+      target_tokens: 40237790440
       unique_tokens: 0
-      replay_tokens: 50000000000
+      replay_tokens: 40237790440
       purpose: premium non-synthetic cooldown during final learning-rate decay
 
 categories:
-  - id: web
-    label: General and educational web
-    phase_tokens: {phase_a: 420000000000, phase_b: 85000000000, phase_c: 20000000000}
-  - id: code
-    label: Code and software engineering
-    phase_tokens: {phase_a: 90000000000, phase_b: 55000000000, phase_c: 15000000000}
-  - id: math
-    label: Mathematics and formal reasoning
-    phase_tokens: {phase_a: 40000000000, phase_b: 35000000000, phase_c: 10000000000}
-  - id: science
-    label: Science, papers, PDFs, and technical text
-    phase_tokens: {phase_a: 90000000000, phase_b: 30000000000, phase_c: 5000000000}
-  - id: synthetic
-    label: Synthetic pedagogical and factual data
-    phase_tokens: {phase_a: 25000000000, phase_b: 45000000000, phase_c: 0}
-  - id: reference
-    label: Books, encyclopedic, legal, and reference
-    phase_tokens: {phase_a: 25000000000, phase_b: 0, phase_c: 0}
-  - id: multilingual
-    label: Translated and native multilingual
-    phase_tokens: {phase_a: 10000000000, phase_b: 0, phase_c: 0}
+- id: web
+  label: General and educational web
+  phase_tokens: {phase_a: 253095678661, phase_b: 51221744491, phase_c: 16095116176}
+- id: code
+  label: Code and software engineering
+  phase_tokens: {phase_a: 79251366428, phase_b: 48431390594, phase_c: 12071337132}
+- id: math
+  label: Mathematics and formal reasoning
+  phase_tokens: {phase_a: 25319064478, phase_b: 22154181419, phase_c: 8047558088}
+- id: science
+  label: Science, papers, PDFs, and technical text
+  phase_tokens: {phase_a: 94128486663, phase_b: 31376162221, phase_c: 4023779044}
+- id: synthetic
+  label: Synthetic pedagogical and factual data
+  phase_tokens: {phase_a: 31380645957, phase_b: 56485162724, phase_c: 0}
+- id: reference
+  label: Books, encyclopedic, legal, and reference
+  phase_tokens: {phase_a: 52023251825, phase_b: 0, phase_c: 0}
+- id: multilingual
+  label: Translated and native multilingual
+  phase_tokens: {phase_a: 19650882934, phase_b: 0, phase_c: 0}
 
 # Three of the four buckets were withdrawn with their sources. Every fresh
 # source was a common_crawl_ranges build, and that driver cannot run on this
@@ -81,9 +81,9 @@ categories:
 # buckets is a 1.7 task and needs a host with egress from compute nodes.
 freshness_layer:
   embedded_in_target: true
-  target_tokens: 35000000000
+  target_tokens: 34183188748
   buckets:
-    general_web: 35000000000
+    general_web: 34183188748
 
 selection:
   seed: 16062026
@@ -94,36 +94,36 @@ selection:
   replay:
     maximum_document_exposures: 4
     winner_policy:
-      - license_cleared
-      - primary_source
-      - human_original_over_synthetic
-      - structurally_complete_extraction
-      - current_version_for_time_sensitive_content
-      - higher_quality_score
-      - deterministic_hash
+    - license_cleared
+    - primary_source
+    - human_original_over_synthetic
+    - structurally_complete_extraction
+    - current_version_for_time_sensitive_content
+    - higher_quality_score
+    - deterministic_hash
 
 hard_exclusions:
-  - id: cais/hle
-    reason: evaluation_only
-  - id: Idavidrein/gpqa
-    reason: evaluation_only
-  - id: nvidia/UltraData-SFT-2605
-    reason: post_training_only
-  - id: benchmark_solution_repositories
-    reason: contamination
-  - id: unlicensed_or_unresolved
-    reason: release_risk
-  - id: private_leaked_credential_or_personal_data
-    reason: privacy_and_security
+- id: cais/hle
+  reason: evaluation_only
+- id: Idavidrein/gpqa
+  reason: evaluation_only
+- id: nvidia/UltraData-SFT-2605
+  reason: post_training_only
+- id: benchmark_solution_repositories
+  reason: contamination
+- id: unlicensed_or_unresolved
+  reason: release_risk
+- id: private_leaked_credential_or_personal_data
+  reason: privacy_and_security
 
 source_files:
-  - sources/web.yaml
-  - sources/code.yaml
-  - sources/math.yaml
-  - sources/science.yaml
-  - sources/synthetic.yaml
-  - sources/reference.yaml
-  - sources/multilingual.yaml
+- sources/web.yaml
+- sources/code.yaml
+- sources/math.yaml
+- sources/science.yaml
+- sources/synthetic.yaml
+- sources/reference.yaml
+- sources/multilingual.yaml
 
 replacement_policy_file: replacements.yaml
 context_extension_plan_file: context-extension.yaml

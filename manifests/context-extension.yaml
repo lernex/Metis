@@ -51,71 +51,122 @@ selection:
 # the declared reserve to the existing 1T source request so the same download
 # supervisor fetches enough long candidates without duplicating raw corpora.
 sources:
-  - {id: starcoder_permissive_code, domain: repository_code, tokens: 1800000000, retrieval_multiplier: 2.20}
-  - {id: github_code_clean, domain: repository_code, tokens: 900000000, retrieval_multiplier: 2.50}
-  - {id: nemotron_cc_code_v1, domain: repository_code, tokens: 900000000, retrieval_multiplier: 2.25}
-
-  - {id: finepdfs_edu_english, domain: science, tokens: 1200000000, retrieval_multiplier: 2.50}
-  - {id: pes2o, domain: science, tokens: 1000000000, retrieval_multiplier: 2.20}
-  - {id: pmc_open_access, domain: science, tokens: 600000000, retrieval_multiplier: 2.20}
-  - {id: proof_pile2_science, domain: science, tokens: 400000000, retrieval_multiplier: 2.40}
-  - {id: openstax, domain: science, tokens: 100000000, retrieval_multiplier: 1.00}
-  - {id: patents_engineering_reports, domain: science, tokens: 300000000, retrieval_multiplier: 2.80}
-
-  - {id: public_domain_books_gutenberg, domain: longform_reference, tokens: 600000000, retrieval_multiplier: 1.60}
-  - {id: public_domain_books_pre1929, domain: longform_reference, tokens: 500000000, retrieval_multiplier: 1.60}
-  - {id: common_pile_doab_reference, domain: longform_reference, tokens: 400000000, retrieval_multiplier: 1.50}
-  - {id: common_pile_libretexts_reference, domain: longform_reference, tokens: 300000000, retrieval_multiplier: 1.30}
-  - {id: common_pile_loc_reference, domain: longform_reference, tokens: 300000000, retrieval_multiplier: 1.80}
-  - {id: open_law_caselaw, domain: longform_reference, tokens: 300000000, retrieval_multiplier: 2.00}
-  - {id: metis_govreference_uk_hansard, domain: longform_reference, tokens: 150000000, retrieval_multiplier: 1.70}
-  - {id: metis_govreference_regulations, domain: longform_reference, tokens: 150000000, retrieval_multiplier: 2.00}
-
-  - {id: fineweb_edu, domain: educational_web, tokens: 1800000000, retrieval_multiplier: 3.00}
-  - {id: nemotron_cc_v21_organic, domain: educational_web, tokens: 1200000000, retrieval_multiplier: 3.00}
-  - {id: essential_web, domain: educational_web, tokens: 600000000, retrieval_multiplier: 3.25}
-
-  - {id: nemotron_cc_math_4plus, domain: math_formal, tokens: 800000000, retrieval_multiplier: 2.60}
-  - {id: proof_pile2_math, domain: math_formal, tokens: 400000000, retrieval_multiplier: 2.20}
-  - {id: finemath_unique, domain: math_formal, tokens: 300000000, retrieval_multiplier: 2.80}
-  - {id: formal_theorem_corpora, domain: math_formal, tokens: 300000000, retrieval_multiplier: 2.40}
-
-  # Sole remaining technical_discussion member: metis_freshdocs_2025_26 (400M)
-  # and metis_freshsoftwaredocs_2025_26 (700M) were withdrawn with every other
-  # common_crawl_ranges source; see manifests/sources/web.yaml.
-  - {id: roots_stackexchange, domain: technical_discussion, tokens: 1800000000, retrieval_multiplier: 3.00}
-
-  - {id: finewiki, domain: general_reference, tokens: 350000000, retrieval_multiplier: 2.00}
-  - {id: wikimedia_reference, domain: general_reference, tokens: 250000000, retrieval_multiplier: 2.00}
-  - {id: metis_freshweb_2025, domain: general_reference, tokens: 300000000, retrieval_multiplier: 3.00}
-
+- {id: starcoder_permissive_code, domain: repository_code, tokens: 2400000000, retrieval_multiplier: 2.2}
+- {id: nemotron_cc_code_v1, domain: repository_code, tokens: 1100000000, retrieval_multiplier: 2.25}
+- {id: github_code_clean, domain: repository_code, tokens: 700000000, retrieval_multiplier: 2.5}
+- {id: pes2o, domain: science, tokens: 1700000000, retrieval_multiplier: 2.2}
+- {id: pmc_open_access, domain: science, tokens: 1400000000, retrieval_multiplier: 2.2}
+- {id: finepdfs_edu_english, domain: science, tokens: 1100000000, retrieval_multiplier: 2.5}
+- {id: proof_pile2_science, domain: science, tokens: 400000000, retrieval_multiplier: 2.2}
+- {id: patents_engineering_reports, domain: science, tokens: 200000000, retrieval_multiplier: 2.2}
+- {id: public_domain_books_pre1929, domain: longform_reference, tokens: 1100000000, retrieval_multiplier: 2.2}
+- {id: common_pile_loc_reference, domain: longform_reference, tokens: 1000000000, retrieval_multiplier: 2.2}
+- id: open_law_usgpo
+  domain: longform_reference
+  tokens: 500000000
+  retrieval_multiplier: 2.2
+- {id: metis_govreference_uk_hansard, domain: longform_reference, tokens: 300000000, retrieval_multiplier: 2.2}
+- {id: common_pile_doab_reference, domain: longform_reference, tokens: 200000000, retrieval_multiplier: 2.2}
+- {id: open_law_caselaw, domain: longform_reference, tokens: 200000000, retrieval_multiplier: 2.5}
+- id: nemotron_cc_v2_organic
+  domain: educational_web
+  tokens: 1800000000
+  retrieval_multiplier: 2.5
+- id: dclm_baseline
+  domain: educational_web
+  tokens: 900000000
+  retrieval_multiplier: 2.5
+- {id: nemotron_cc_v21_organic, domain: educational_web, tokens: 500000000, retrieval_multiplier: 2.5}
+- {id: fineweb_edu, domain: educational_web, tokens: 300000000, retrieval_multiplier: 2.5}
+- {id: essential_web, domain: educational_web, tokens: 100000000, retrieval_multiplier: 2.5}
+- {id: nemotron_cc_math_4plus, domain: math_formal, tokens: 500000000, retrieval_multiplier: 2.2}
+- id: nemotron_cc_math_unique_3
+  domain: math_formal
+  tokens: 400000000
+  retrieval_multiplier: 2.2
+- {id: proof_pile2_math, domain: math_formal, tokens: 150000000, retrieval_multiplier: 2.2}
+- id: openwebmath_unique
+  domain: math_formal
+  tokens: 80000000
+  retrieval_multiplier: 2.2
+- {id: finemath_unique, domain: math_formal, tokens: 70000000, retrieval_multiplier: 2.2}
+- {id: wikimedia_reference, domain: general_reference, tokens: 600000000, retrieval_multiplier: 2.2}
+- {id: metis_freshweb_2025, domain: general_reference, tokens: 300000000, retrieval_multiplier: 2.5}
 fallbacks:
   exhaustion_policy: fail_closed
   preserve_domain: true
   generated_donor_forbidden: true
   groups:
-    - id: repository_code
-      members: [starcoder_permissive_code, github_code_clean, nemotron_cc_code_v1]
-      donor_order: [starcoder_permissive_code, nemotron_cc_code_v1, github_code_clean]
-    - id: science
-      members: [finepdfs_edu_english, pes2o, pmc_open_access, proof_pile2_science, openstax, patents_engineering_reports]
-      donor_order: [finepdfs_edu_english, pes2o, pmc_open_access, proof_pile2_science, openstax, patents_engineering_reports]
-    - id: longform_reference
-      members: [public_domain_books_gutenberg, public_domain_books_pre1929, common_pile_doab_reference, common_pile_libretexts_reference, common_pile_loc_reference, open_law_caselaw, metis_govreference_uk_hansard, metis_govreference_regulations]
-      donor_order: [common_pile_doab_reference, common_pile_libretexts_reference, public_domain_books_gutenberg, public_domain_books_pre1929, common_pile_loc_reference, open_law_caselaw, metis_govreference_uk_hansard, metis_govreference_regulations]
-    - id: educational_web
-      members: [fineweb_edu, nemotron_cc_v21_organic, essential_web]
-      donor_order: [fineweb_edu, nemotron_cc_v21_organic, essential_web]
-    - id: math_formal
-      members: [nemotron_cc_math_4plus, proof_pile2_math, finemath_unique, formal_theorem_corpora]
-      donor_order: [nemotron_cc_math_4plus, proof_pile2_math, finemath_unique, formal_theorem_corpora]
-    - id: technical_discussion
-      members: [roots_stackexchange]
-      donor_order: [roots_stackexchange]
-    - id: general_reference
-      members: [finewiki, wikimedia_reference, metis_freshweb_2025]
-      donor_order: [finewiki, wikimedia_reference, metis_freshweb_2025]
-
+  - id: repository_code
+    members:
+    - starcoder_permissive_code
+    - nemotron_cc_code_v1
+    - github_code_clean
+    donor_order:
+    - starcoder_permissive_code
+    - nemotron_cc_code_v1
+    - github_code_clean
+  - id: science
+    members:
+    - pes2o
+    - pmc_open_access
+    - finepdfs_edu_english
+    - proof_pile2_science
+    - patents_engineering_reports
+    donor_order:
+    - pes2o
+    - pmc_open_access
+    - finepdfs_edu_english
+    - proof_pile2_science
+    - patents_engineering_reports
+  - id: longform_reference
+    members:
+    - public_domain_books_pre1929
+    - common_pile_loc_reference
+    - open_law_usgpo
+    - metis_govreference_uk_hansard
+    - common_pile_doab_reference
+    - open_law_caselaw
+    donor_order:
+    - public_domain_books_pre1929
+    - common_pile_loc_reference
+    - open_law_usgpo
+    - metis_govreference_uk_hansard
+    - common_pile_doab_reference
+    - open_law_caselaw
+  - id: educational_web
+    members:
+    - nemotron_cc_v2_organic
+    - dclm_baseline
+    - nemotron_cc_v21_organic
+    - fineweb_edu
+    - essential_web
+    donor_order:
+    - nemotron_cc_v2_organic
+    - dclm_baseline
+    - nemotron_cc_v21_organic
+    - fineweb_edu
+    - essential_web
+  - id: math_formal
+    members:
+    - nemotron_cc_math_4plus
+    - nemotron_cc_math_unique_3
+    - proof_pile2_math
+    - openwebmath_unique
+    - finemath_unique
+    donor_order:
+    - nemotron_cc_math_4plus
+    - nemotron_cc_math_unique_3
+    - proof_pile2_math
+    - finemath_unique
+    - openwebmath_unique
+  - id: general_reference
+    members:
+    - wikimedia_reference
+    - metis_freshweb_2025
+    donor_order:
+    - wikimedia_reference
+    - metis_freshweb_2025
 gate_policy:
   schema: metis.context-gate-policy/v1
   checkpoints: [6000000000, 12000000000, 18000000000]
@@ -133,11 +184,11 @@ gate_policy:
   promote_best_passing_gate: true
 
 research_basis:
-  - paper: https://arxiv.org/abs/2402.10171
-    use: per-source length upsampling and domain balance
-  - paper: https://arxiv.org/abs/2410.02660
-    use: repository code, books, high-quality short-data retention, train-length overshoot
-  - paper: https://arxiv.org/abs/2510.25804
-    use: long-range information gain rather than raw length alone
-  - paper: https://arxiv.org/abs/2501.12766
-    use: dependency-preserving negative-document construction
+- paper: https://arxiv.org/abs/2402.10171
+  use: per-source length upsampling and domain balance
+- paper: https://arxiv.org/abs/2410.02660
+  use: repository code, books, high-quality short-data retention, train-length overshoot
+- paper: https://arxiv.org/abs/2510.25804
+  use: long-range information gain rather than raw length alone
+- paper: https://arxiv.org/abs/2501.12766
+  use: dependency-preserving negative-document construction

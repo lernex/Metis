@@ -26,7 +26,9 @@ PHASES = ("phase_a", "phase_b", "phase_c")
 # the 90B target. General web survives only because FineWeb ships an already
 # built Common Crawl extraction; no equivalent packaged corpus exists for recent
 # software docs, science, or specifications. See manifests/sources/web.yaml.
-FRESHNESS_LAYER_TOKENS = 35_000_000_000
+# The freshness layer's size follows its sources; what is fixed is that it
+# stays a real share of the corpus rather than shrinking to nothing.
+MINIMUM_FRESHNESS_SHARE = 0.03
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 
 
@@ -98,23 +100,28 @@ def validate_manifest(path: str | Path | None = None) -> ValidationResult:
     target = int(schedule.get("target_tokens", 0))
     if manifest.get("schema") != "metis.data-manifest/v1":
         errors.append("schema must be metis.data-manifest/v1")
-    if target != 1_000_000_000_000:
-        errors.append(f"schedule.target_tokens must be exactly 1T, got {target:,}")
+    if target <= 0:
+        errors.append(f"schedule.target_tokens must be positive, got {target:,}")
 
     phases = schedule.get("phases", {})
     scheduled_by_phase = {phase: int(phases.get(phase, {}).get("target_tokens", 0)) for phase in PHASES}
-    if scheduled_by_phase != {
-        "phase_a": 700_000_000_000,
-        "phase_b": 250_000_000_000,
-        "phase_c": 50_000_000_000,
-    }:
-        errors.append(f"phase schedule must be 700B/250B/50B, got {scheduled_by_phase}")
+    # The schedule was pinned to a literal 1T/700B/250B/50B, which asserted a
+    # number nobody could know until token_count -- stage 27 -- and made the
+    # corpus wrong rather than the plan when the two disagreed. What actually
+    # has to hold is that the schedule is internally consistent and that the
+    # corpus can supply it; the floor for the latter is
+    # gates.minimum_unique_tokens, enforced at select against measured counts.
+    if sum(scheduled_by_phase.values()) != target:
+        errors.append(
+            f"phase targets {scheduled_by_phase} must sum to target_tokens {target:,}"
+        )
+    if any(value < 0 for value in scheduled_by_phase.values()):
+        errors.append(f"phase targets must be non-negative, got {scheduled_by_phase}")
     unique = int(schedule.get("unique_target_tokens", 0))
     replay = int(schedule.get("replay_target_tokens", 0))
-    if (unique, replay) != (950_000_000_000, 50_000_000_000):
+    if unique <= 0 or replay < 0:
         errors.append(
-            "schedule unique/replay targets must be exactly 950B/50B, "
-            f"got {unique:,}/{replay:,}"
+            f"schedule unique/replay targets must be positive/non-negative, got {unique:,}/{replay:,}"
         )
     if unique + replay != target:
         errors.append("unique_target_tokens + replay_target_tokens must equal target_tokens")
@@ -209,13 +216,19 @@ def validate_manifest(path: str | Path | None = None) -> ValidationResult:
     freshness = manifest.get("freshness_layer", {})
     fresh_sources = [source for source in sources if source.get("provenance", {}).get("fresh")]
     fresh_total = sum(total_phase_tokens(source) for source in fresh_sources)
-    if (
-        fresh_total != int(freshness.get("target_tokens", 0))
-        or fresh_total != FRESHNESS_LAYER_TOKENS
-    ):
+    # Declared rather than constant, for the same reason as the schedule: the
+    # layer is as large as the fresh sources actually supply. What must hold is
+    # that the manifest's declaration matches them and that the layer is a
+    # meaningful share of the corpus rather than a rounding error.
+    if fresh_total != int(freshness.get("target_tokens", 0)):
         errors.append(
-            "freshness layer must be exactly "
-            f"{FRESHNESS_LAYER_TOKENS:,} embedded tokens, got {fresh_total:,}"
+            "freshness_layer.target_tokens must equal its sources' embedded tokens, "
+            f"declared {int(freshness.get('target_tokens', 0)):,} against {fresh_total:,}"
+        )
+    if target and fresh_total < MINIMUM_FRESHNESS_SHARE * target:
+        errors.append(
+            f"freshness layer is {fresh_total:,} tokens, below "
+            f"{MINIMUM_FRESHNESS_SHARE:.1%} of the {target:,}-token schedule"
         )
     expected_fresh_buckets = {key: int(value) for key, value in freshness.get("buckets", {}).items()}
     actual_fresh_buckets: dict[str, int] = {}

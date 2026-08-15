@@ -1,26 +1,26 @@
 sources:
-  - id: nemotron_v21_translated_hq
-    label: Nemotron-CC-v2.1 high-quality translated-to-English knowledge
-    category: multilingual
-    phase_tokens: {phase_a: 7000000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: true, fresh: false}
-    access: {type: huggingface, repo_id: nvidia/Nemotron-CC-v2.1, revision: ba6f2aaef7ada865bb08fc08640ca292150097db, gated: manual, allow_patterns: [High-Quality-Translated-To-English/**]}
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.75}
-    processing: {quality_profile: translated_english_v1, dedup_namespace: global_multilingual, priority: 90}
+- id: nemotron_v21_translated_hq
+  label: Nemotron-CC-v2.1 high-quality translated-to-English knowledge
+  category: multilingual
+  phase_tokens: {phase_a: 7906722593, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: true, fresh: false}
+  access: {type: huggingface, repo_id: nvidia/Nemotron-CC-v2.1, revision: ba6f2aaef7ada865bb08fc08640ca292150097db, gated: manual, allow_patterns: [High-Quality-Translated-To-English/**]}
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.75}
+  processing: {quality_profile: translated_english_v1, dedup_namespace: global_multilingual, priority: 90}
 
-  - id: fineweb2_native_multilingual
-    label: Limited native multilingual exposure from FineWeb-2
-    category: multilingual
-    phase_tokens: {phase_a: 3000000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
+- id: fineweb2_native_multilingual
+  label: Limited native multilingual exposure from FineWeb-2
+  category: multilingual
+  phase_tokens: {phase_a: 11744160341, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
     # FineWeb-2 ships its rejects next to its corpus: <lang>_removed/ holds the
     # documents its own filters threw out, carrying filter_reason and
     # wordlist_ratio columns the kept data does not have. data/** takes them,
     # and the resolver labels them training_records like everything else. The
     # test splits go for the same reason -- an evaluation split is the last
     # thing that belongs in a pretraining corpus.
-    access: {type: huggingface, repo_id: HuggingFaceFW/fineweb-2, revision: af9c13333eb981300149d5ca60a8e9d659b276b9, gated: false, allow_patterns: [data/**], deny_patterns: [data/*_removed/**, data/*/test/**, data/*/validation/**, data/*/dev/**]}
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 6.78, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: multilingual_native_v1, dedup_namespace: global_multilingual, priority: 85}
+  access: {type: huggingface, repo_id: HuggingFaceFW/fineweb-2, revision: af9c13333eb981300149d5ca60a8e9d659b276b9, gated: false, allow_patterns: [data/**], deny_patterns: [data/*_removed/**, data/*/test/**, data/*/validation/**, data/*/dev/**]}
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 6.78, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: multilingual_native_v1, dedup_namespace: global_multilingual, priority: 85}

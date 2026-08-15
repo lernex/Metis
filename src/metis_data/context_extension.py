@@ -4,6 +4,17 @@ import gzip
 import hashlib
 import io
 import json
+
+try:  # matches stage_runner: orjson decodes these shards about 2.5x faster
+    import orjson as _orjson
+
+    def _loads(value: Any) -> Any:
+        return _orjson.loads(value)
+
+except ImportError:  # pragma: no cover
+    def _loads(value: Any) -> Any:
+        return json.loads(value)
+
 import math
 import os
 import re
@@ -1148,9 +1159,8 @@ def initialize_context_arrays(
 def _iter_rows(path: Path) -> Iterator[dict[str, Any]]:
     if path.name.endswith(".jsonl.zst"):
         raw = path.open("rb")
-        handle: Any = io.TextIOWrapper(
-            zstd.ZstdDecompressor().stream_reader(raw),
-            encoding="utf-8",
+        handle: Any = io.BufferedReader(
+            zstd.ZstdDecompressor().stream_reader(raw), buffer_size=1 << 22
         )
     elif path.name.endswith(".jsonl.gz"):
         handle = gzip.open(path, "rt", encoding="utf-8")
@@ -1159,7 +1169,7 @@ def _iter_rows(path: Path) -> Iterator[dict[str, Any]]:
     with handle:
         for line in handle:
             if line.strip():
-                payload = json.loads(line)
+                payload = _loads(line)
                 if not isinstance(payload, dict):
                     raise RuntimeError(f"invalid JSON row in {path}")
                 yield payload

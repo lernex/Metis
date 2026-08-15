@@ -1,163 +1,163 @@
 sources:
-  - id: finewiki
-    label: FineWiki encyclopedic knowledge
-    category: reference
-    phase_tokens: {phase_a: 5000000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access: {type: huggingface, repo_id: HuggingFaceFW/finewiki, revision: 8bd13e72e6a002407649b3e898535f42ceb1aeb9, gated: false, allow_patterns: [data/enwiki/**]}
-    license: {status: reviewed, expression: CC-BY-SA-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.75}
-    processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 90}
+- id: finewiki
+  label: FineWiki encyclopedic knowledge
+  category: reference
+  phase_tokens: {phase_a: 1173864552, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access: {type: huggingface, repo_id: HuggingFaceFW/finewiki, revision: 8bd13e72e6a002407649b3e898535f42ceb1aeb9, gated: false, allow_patterns: [data/enwiki/**]}
+  license: {status: reviewed, expression: CC-BY-SA-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.75}
+  processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 90}
 
-  - id: wikimedia_reference
-    label: Common Pile filtered Wikimedia, Wikibooks, and Wikisource reference
-    category: reference
-    phase_tokens: {phase_a: 3000000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/wikimedia_filtered
-      revision: 0641bb84bd9b7162bcddf8be7836822161a9a342
-      gated: false
-      allow_patterns: [wikimedia-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: per-project-CC-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 9.64, compressed_bytes_per_token: 1.50}
-    processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 88}
+- id: wikimedia_reference
+  label: Common Pile filtered Wikimedia, Wikibooks, and Wikisource reference
+  category: reference
+  phase_tokens: {phase_a: 9586458021, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/wikimedia_filtered
+    revision: 0641bb84bd9b7162bcddf8be7836822161a9a342
+    gated: false
+    allow_patterns: [wikimedia-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: per-project-CC-license}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 9.64, compressed_bytes_per_token: 1.50}
+  processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 88}
 
-  - id: public_domain_books_gutenberg
-    label: Common Pile filtered Project Gutenberg and PG-19 public-domain books
-    category: reference
-    phase_tokens: {phase_a: 1500000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/project_gutenberg_filtered
-      revision: 3cdf6879c807f4e4e063f2ceb23bc268d8c29ab7
-      gated: false
-      allow_patterns: [project_gutenberg-dolma-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 6.78, compressed_bytes_per_token: 1.52}
-    processing: {quality_profile: longform_book_v1, dedup_namespace: global_books, priority: 84}
+- id: public_domain_books_gutenberg
+  label: Common Pile filtered Project Gutenberg and PG-19 public-domain books
+  category: reference
+  phase_tokens: {phase_a: 2798929146, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/project_gutenberg_filtered
+    revision: 3cdf6879c807f4e4e063f2ceb23bc268d8c29ab7
+    gated: false
+    allow_patterns: [project_gutenberg-dolma-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 6.78, compressed_bytes_per_token: 1.52}
+  processing: {quality_profile: longform_book_v1, dedup_namespace: global_books, priority: 84}
 
-  - id: public_domain_books_pre1929
-    label: Common Pile filtered pre-1929 public-domain books
-    category: reference
-    phase_tokens: {phase_a: 2500000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/pre_1929_books_filtered
-      revision: 23f9d96dbb1db3324bbc9fbfe1f8299cc799c4d1
-      gated: false
-      allow_patterns: [public_library_1929_dolma-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 9.4, compressed_bytes_per_token: 1.43}
-    processing: {quality_profile: longform_book_v1, dedup_namespace: global_books, priority: 84}
+- id: public_domain_books_pre1929
+  label: Common Pile filtered pre-1929 public-domain books
+  category: reference
+  phase_tokens: {phase_a: 5834336394, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/pre_1929_books_filtered
+    revision: 23f9d96dbb1db3324bbc9fbfe1f8299cc799c4d1
+    gated: false
+    allow_patterns: [public_library_1929_dolma-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 9.4, compressed_bytes_per_token: 1.43}
+  processing: {quality_profile: longform_book_v1, dedup_namespace: global_books, priority: 84}
 
-  - id: common_pile_loc_reference
-    label: Common Pile filtered Library of Congress books
-    category: reference
-    phase_tokens: {phase_a: 1500000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/library_of_congress_filtered
-      revision: 56725c7aa1bb320703e22eb5f42903173d5bac3d
-      gated: false
-      allow_patterns: [loc_books_dolma-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 12.0, compressed_bytes_per_token: 1.44}
-    processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 80}
+- id: common_pile_loc_reference
+  label: Common Pile filtered Library of Congress books
+  category: reference
+  phase_tokens: {phase_a: 4439032676, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/library_of_congress_filtered
+    revision: 56725c7aa1bb320703e22eb5f42903173d5bac3d
+    gated: false
+    allow_patterns: [loc_books_dolma-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 12.0, compressed_bytes_per_token: 1.44}
+  processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 80}
 
-  - id: common_pile_doab_reference
-    label: Common Pile filtered Directory of Open Access Books
-    category: reference
-    phase_tokens: {phase_a: 1000000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/doab_filtered
-      revision: defb24ca72ef6aba6ce0228b669eec06dcfbffbc
-      gated: false
-      allow_patterns: [doab-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-per-record-CC-BY-or-CC-BY-SA}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 6.05, compressed_bytes_per_token: 1.12}
-    processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 84}
+- id: common_pile_doab_reference
+  label: Common Pile filtered Directory of Open Access Books
+  category: reference
+  phase_tokens: {phase_a: 1164552890, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/doab_filtered
+    revision: defb24ca72ef6aba6ce0228b669eec06dcfbffbc
+    gated: false
+    allow_patterns: [doab-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-per-record-CC-BY-or-CC-BY-SA}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 6.05, compressed_bytes_per_token: 1.12}
+  processing: {quality_profile: reference_v1, dedup_namespace: global_reference, priority: 84}
 
-  - id: common_pile_libretexts_reference
-    label: Common Pile filtered LibreTexts open textbooks
-    category: reference
-    phase_tokens: {phase_a: 500000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/libretexts_filtered
-      revision: 70388bca52b4a93515e14b1d56618fd7944988fd
-      gated: false
-      allow_patterns: [libretexts-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-per-record-open-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.59, compressed_bytes_per_token: 0.13}
-    processing: {quality_profile: textbook_v1, dedup_namespace: global_science_reference, priority: 88}
+- id: common_pile_libretexts_reference
+  label: Common Pile filtered LibreTexts open textbooks
+  category: reference
+  phase_tokens: {phase_a: 8230140, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/libretexts_filtered
+    revision: 70388bca52b4a93515e14b1d56618fd7944988fd
+    gated: false
+    allow_patterns: [libretexts-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-per-record-open-license}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.59, compressed_bytes_per_token: 0.13}
+  processing: {quality_profile: textbook_v1, dedup_namespace: global_science_reference, priority: 88}
 
-  - id: roots_stackexchange
-    label: Common Pile StackExchange high-quality explanatory QA
-    category: reference
-    phase_tokens: {phase_a: 3000000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/stackexchange_filtered
-      revision: c0ac7373830c688a43fc12d1988c4b19ccd884ab
-      gated: false
-      allow_patterns: [stackexchange-dolma-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: per-post-CC-BY-SA-version}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 15.14, compressed_bytes_per_token: 1.56}
-    processing: {quality_profile: explanatory_qa_v1, dedup_namespace: global_reference, priority: 92}
+- id: roots_stackexchange
+  label: Common Pile StackExchange high-quality explanatory QA
+  category: reference
+  phase_tokens: {phase_a: 13161517164, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/stackexchange_filtered
+    revision: c0ac7373830c688a43fc12d1988c4b19ccd884ab
+    gated: false
+    allow_patterns: [stackexchange-dolma-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: per-post-CC-BY-SA-version}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 15.14, compressed_bytes_per_token: 1.56}
+  processing: {quality_profile: explanatory_qa_v1, dedup_namespace: global_reference, priority: 92}
 
-  - id: open_law_caselaw
-    label: Common Pile filtered public-domain Caselaw Access Project and CourtListener opinions
-    category: reference
-    phase_tokens: {phase_a: 2300000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/caselaw_access_project_filtered
-      revision: 50e1961a5ed8fdddcee64c9e66e1338de8953b63
-      gated: false
-      allow_patterns: [CAP-Dolma-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 17.01, compressed_bytes_per_token: 1.25}
-    processing: {quality_profile: legal_primary_v1, dedup_namespace: global_legal, priority: 86}
+- id: open_law_caselaw
+  label: Common Pile filtered public-domain Caselaw Access Project and CourtListener opinions
+  category: reference
+  phase_tokens: {phase_a: 6034294619, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/caselaw_access_project_filtered
+    revision: 50e1961a5ed8fdddcee64c9e66e1338de8953b63
+    gated: false
+    allow_patterns: [CAP-Dolma-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-per-record-public-domain-review}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 17.01, compressed_bytes_per_token: 1.25}
+  processing: {quality_profile: legal_primary_v1, dedup_namespace: global_legal, priority: 86}
 
-  - id: open_law_usgpo
-    label: Common Pile filtered United States Government Publishing Office primary legal text
-    category: reference
-    phase_tokens: {phase_a: 700000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/usgpo_filtered
-      revision: b150cc22211de4d57f1b7f570097a00e65042424
-      gated: false
-      allow_patterns: [usgpo-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-US-government-record-review}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 26.11, compressed_bytes_per_token: 1.10}
-    processing: {quality_profile: legal_primary_v1, dedup_namespace: global_legal, priority: 86}
+- id: open_law_usgpo
+  label: Common Pile filtered United States Government Publishing Office primary legal text
+  category: reference
+  phase_tokens: {phase_a: 3953024411, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/usgpo_filtered
+    revision: b150cc22211de4d57f1b7f570097a00e65042424
+    gated: false
+    allow_patterns: [usgpo-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-US-government-record-review}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 26.11, compressed_bytes_per_token: 1.10}
+  processing: {quality_profile: legal_primary_v1, dedup_namespace: global_legal, priority: 86}
 
-  - id: nemotron_legal_v1
-    label: Selected Nemotron synthetic legal reasoning
-    category: reference
-    phase_tokens: {phase_a: 2000000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
+- id: nemotron_legal_v1
+  label: Selected Nemotron synthetic legal reasoning
+  category: reference
+  phase_tokens: {phase_a: 2240409567, phase_b: 0, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
     # Five of the thirteen subsets are reformulations of tasks from benchmarks
     # this build evaluates on -- manifests/contamination/eval-holdouts.yaml pins
     # both nguha/legalbench and coastalcph/lex_glue, and lex_glue carries
@@ -179,63 +179,63 @@ sources:
     # -- the last four are LegalBench task names. ToSDR/ToS/eCFR-QA are
     # question-shaped but derive from tosdr.org and the eCFR, neither of which
     # is a pinned benchmark, so they stay.
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-Pretraining-Legal-v1
-      revision: 3d91d58a5c0c46fe9944300ec46719f97a385b13
-      gated: false
-      allow_patterns:
-        - 'Nemotron-Pretraining-Legal-California-Code-Of-Regulations/*.parquet'
-        - 'Nemotron-Pretraining-Legal-CaseHOLD/*.parquet'
-        - 'Nemotron-Pretraining-Legal-GlobalCit/*.parquet'
-        - 'Nemotron-Pretraining-Legal-NYCourts-Judicial-Ethics-Opinions/*.parquet'
-        - 'Nemotron-Pretraining-Legal-ToS-Clause-Understanding/*.parquet'
-        - 'Nemotron-Pretraining-Legal-ToSDR-QA/*.parquet'
-        - 'Nemotron-Pretraining-Legal-eCFR/*.parquet'
-        - 'Nemotron-Pretraining-Legal-eCFR-QA/*.parquet'
-    license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.75}
-    processing: {quality_profile: legal_synthetic_v1, dedup_namespace: synthetic_legal, priority: 75}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-Pretraining-Legal-v1
+    revision: 3d91d58a5c0c46fe9944300ec46719f97a385b13
+    gated: false
+    allow_patterns:
+    - 'Nemotron-Pretraining-Legal-California-Code-Of-Regulations/*.parquet'
+    - 'Nemotron-Pretraining-Legal-CaseHOLD/*.parquet'
+    - 'Nemotron-Pretraining-Legal-GlobalCit/*.parquet'
+    - 'Nemotron-Pretraining-Legal-NYCourts-Judicial-Ethics-Opinions/*.parquet'
+    - 'Nemotron-Pretraining-Legal-ToS-Clause-Understanding/*.parquet'
+    - 'Nemotron-Pretraining-Legal-ToSDR-QA/*.parquet'
+    - 'Nemotron-Pretraining-Legal-eCFR/*.parquet'
+    - 'Nemotron-Pretraining-Legal-eCFR-QA/*.parquet'
+  license: {status: reviewed, expression: CC-BY-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.75}
+  processing: {quality_profile: legal_synthetic_v1, dedup_namespace: synthetic_legal, priority: 75}
 
-  - id: metis_govreference_uk_hansard
-    label: Common Pile filtered official United Kingdom parliamentary record
-    category: reference
-    phase_tokens: {phase_a: 1500000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/uk_hansard_filtered
-      revision: c88adc44309aa255a41b51cef93ba783f775fe23
-      gated: false
-      allow_patterns: [uk_hansard-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Open-Parliament-Licence}
+- id: metis_govreference_uk_hansard
+  label: Common Pile filtered official United Kingdom parliamentary record
+  category: reference
+  phase_tokens: {phase_a: 1197897925, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/uk_hansard_filtered
+    revision: c88adc44309aa255a41b51cef93ba783f775fe23
+    gated: false
+    allow_patterns: [uk_hansard-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Open-Parliament-Licence}
     # official_docs_v1 requires a canonical source URL. The Hansard records
     # carry an id, a year, and the publication they came from, but no per-row
     # URL, so every record was rejected for not restating an origin that is
     # fixed for the whole corpus.
-    attestation_basis: >-
-      This is a pinned snapshot of the official UK Parliament Hansard record,
-      whose canonical publication is hansard.parliament.uk. The canonical origin
-      is a property of the publication, identical for every row; each record's
-      own id and sitting date locate it within that publication.
-    attestations:
-      canonical_url: https://hansard.parliament.uk/
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 1.28}
-    processing: {quality_profile: official_docs_v1, dedup_namespace: global_reference, priority: 90}
+  attestation_basis: >-
+    This is a pinned snapshot of the official UK Parliament Hansard record,
+    whose canonical publication is hansard.parliament.uk. The canonical origin
+    is a property of the publication, identical for every row; each record's
+    own id and sitting date locate it within that publication.
+  attestations:
+    canonical_url: https://hansard.parliament.uk/
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 1.28}
+  processing: {quality_profile: official_docs_v1, dedup_namespace: global_reference, priority: 90}
 
-  - id: metis_govreference_regulations
-    label: Common Pile filtered United States regulatory reference
-    category: reference
-    phase_tokens: {phase_a: 500000000, phase_b: 0, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: common-pile/regulations_filtered
-      revision: 3327364490dfc7929009226ad667eceb2441d93a
-      gated: false
-      allow_patterns: [regulations-*.json.gz]
-      take_all: true
-    license: {status: reviewed, expression: Common-Pile-government-record-license}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 5.18, compressed_bytes_per_token: 0.90}
-    processing: {quality_profile: official_docs_v1, dedup_namespace: global_reference, priority: 90}
+- id: metis_govreference_regulations
+  label: Common Pile filtered United States regulatory reference
+  category: reference
+  phase_tokens: {phase_a: 430704320, phase_b: 0, phase_c: 0}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: common-pile/regulations_filtered
+    revision: 3327364490dfc7929009226ad667eceb2441d93a
+    gated: false
+    allow_patterns: [regulations-*.json.gz]
+    take_all: true
+  license: {status: reviewed, expression: Common-Pile-government-record-license}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 5.18, compressed_bytes_per_token: 0.90}
+  processing: {quality_profile: official_docs_v1, dedup_namespace: global_reference, priority: 90}

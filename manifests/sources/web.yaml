@@ -1,122 +1,122 @@
 sources:
-  - id: nemotron_cc_v2_organic
-    label: NVIDIA Nemotron-CC-v2 organic HQ and medium-high web
-    category: web
-    phase_tokens: {phase_a: 150000000000, phase_b: 25000000000, phase_c: 5000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-CC-v2
-      revision: 2669787c66d18601c0e91167fd520be6c1245865
-      gated: manual
-      allow_patterns: [High-Quality/**, Medium-High-Quality/**]
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.64, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 90}
+- id: nemotron_cc_v2_organic
+  label: NVIDIA Nemotron-CC-v2 organic HQ and medium-high web
+  category: web
+  phase_tokens: {phase_a: 114611920717, phase_b: 23195269672, phase_c: 7288517093}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-CC-v2
+    revision: 2669787c66d18601c0e91167fd520be6c1245865
+    gated: manual
+    allow_patterns: [High-Quality/**, Medium-High-Quality/**]
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.64, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 90}
 
-  - id: nemotron_cc_v21_organic
-    label: NVIDIA Nemotron-CC-v2.1 newer organic web
-    category: web
-    phase_tokens: {phase_a: 60000000000, phase_b: 15000000000, phase_c: 5000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-CC-v2.1
-      revision: ba6f2aaef7ada865bb08fc08640ca292150097db
-      gated: manual
-      allow_patterns: [High-Quality/**, Medium-High-Quality/**]
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 95}
+- id: nemotron_cc_v21_organic
+  label: NVIDIA Nemotron-CC-v2.1 newer organic web
+  category: web
+  phase_tokens: {phase_a: 26431833305, phase_b: 5349299597, phase_c: 1680879855}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-CC-v2.1
+    revision: ba6f2aaef7ada865bb08fc08640ca292150097db
+    gated: manual
+    allow_patterns: [High-Quality/**, Medium-High-Quality/**]
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 95}
 
-  - id: fineweb_edu
-    label: FineWeb-Edu educational web score 3+
-    category: web
-    phase_tokens: {phase_a: 60000000000, phase_b: 15000000000, phase_c: 5000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: HuggingFaceFW/fineweb-edu
-      revision: 87f09149ef4734204d70ed1d046ddc9ca3f2b8f9
-      gated: false
-      allow_patterns: [data/**]
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.70}
-    processing: {quality_profile: web_edu_v1, dedup_namespace: global_web, priority: 88}
+- id: fineweb_edu
+  label: FineWeb-Edu educational web score 3+
+  category: web
+  phase_tokens: {phase_a: 21718681315, phase_b: 4395447409, phase_c: 1381156331}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: HuggingFaceFW/fineweb-edu
+    revision: 87f09149ef4734204d70ed1d046ddc9ca3f2b8f9
+    gated: false
+    allow_patterns: [data/**]
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.70}
+  processing: {quality_profile: web_edu_v1, dedup_namespace: global_web, priority: 88}
 
-  - id: dclm_baseline
-    label: DCLM baseline model-filtered web
-    category: web
-    phase_tokens: {phase_a: 45000000000, phase_b: 5000000000, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: mlfoundations/dclm-baseline-1.0
-      revision: a3b142c183aebe5af344955ae20836eb34dcf69b
-      gated: false
-      allow_patterns: [global-shard_*/**]
+- id: dclm_baseline
+  label: DCLM baseline model-filtered web
+  category: web
+  phase_tokens: {phase_a: 26857417332, phase_b: 5435429698, phase_c: 1707944025}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: mlfoundations/dclm-baseline-1.0
+    revision: a3b142c183aebe5af344955ae20836eb34dcf69b
+    gated: false
+    allow_patterns: [global-shard_*/**]
     # Was per_record_required, which no row can satisfy: DCLM ships url, text
     # and WARC/quality signals, because a Common Crawl derivative has no
     # per-document license to ship. The grant that does exist is the
     # publisher's over the compilation -- CC-BY-4.0 on the dataset card --
     # which is the same shape already recorded for metis_freshweb_2025.
-    license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.68}
-    processing: {quality_profile: web_general_v1, dedup_namespace: global_web, priority: 75}
+  license: {status: reviewed, expression: CC-BY-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.68}
+  processing: {quality_profile: web_general_v1, dedup_namespace: global_web, priority: 75}
 
-  - id: essential_web
-    label: Essential-Web taxonomy-balanced high-quality web
-    category: web
-    phase_tokens: {phase_a: 25000000000, phase_b: 5000000000, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: EssentialAI/essential-web-v1.0
-      revision: ce4eccc7e9604667b6d7f32cb6274b8b41f3113d
-      gated: false
-      allow_patterns: [data/**]
+- id: essential_web
+  label: Essential-Web taxonomy-balanced high-quality web
+  category: web
+  phase_tokens: {phase_a: 7825914603, phase_b: 1583816050, phase_c: 497673470}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: EssentialAI/essential-web-v1.0
+    revision: ce4eccc7e9604667b6d7f32cb6274b8b41f3113d
+    gated: false
+    allow_patterns: [data/**]
     # See dclm_baseline. The card states Essential-Web contributions are made
     # available under the ODC attribution license.
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.70}
-    processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 82}
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.70}
+  processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 82}
 
-  - id: txt360
-    label: TxT360 curated web and educational mixture
-    category: web
-    phase_tokens: {phase_a: 18000000000, phase_b: 2000000000, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: LLM360/TxT360
-      revision: 3337c47e3c09726092745da02aac0b6a7da055ed
-      gated: false
+- id: txt360
+  label: TxT360 curated web and educational mixture
+  category: web
+  phase_tokens: {phase_a: 4816231983, phase_b: 974713615, phase_c: 306278691}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: LLM360/TxT360
+    revision: 3337c47e3c09726092745da02aac0b6a7da055ed
+    gated: false
       # The pinned v1.1 release stores BestOfWeb as JSONL, not Parquet.
       # Restrict acquisition to ProX-filtered, globally unique web documents;
       # exclude the synthetic QA and transformed multilingual additions.
-      allow_patterns: ['v1.1/TxT360_BestOfWeb/cc_1-1/*.jsonl']
+    allow_patterns: ['v1.1/TxT360_BestOfWeb/cc_1-1/*.jsonl']
     # See dclm_baseline. Changed pre-emptively: the selected BestOfWeb subset
     # is Common Crawl derived and carries no per-record license, so it would
     # have failed identically once its normalization tasks were scheduled.
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.84, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 80}
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.84, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: web_hq_v1, dedup_namespace: global_web, priority: 80}
 
-  - id: zyda2_unique
-    label: Zyda-2 material surviving global dedup
-    category: web
-    phase_tokens: {phase_a: 14000000000, phase_b: 1000000000, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: Zyphra/Zyda-2
-      revision: bc389cd62969a275b2e3c3e11db826ba1918411a
-      gated: false
-      allow_patterns: [data/**]
+- id: zyda2_unique
+  label: Zyda-2 material surviving global dedup
+  category: web
+  phase_tokens: {phase_a: 4992353200, phase_b: 1010357195, phase_c: 317478769}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: Zyphra/Zyda-2
+    revision: bc389cd62969a275b2e3c3e11db826ba1918411a
+    gated: false
+    allow_patterns: [data/**]
     # See dclm_baseline. The card states Zyda-2 is released under ODC-BY.
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: web_general_v1, dedup_namespace: global_web, priority: 70}
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.25, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: web_general_v1, dedup_namespace: global_web, priority: 70}
 
   # Was metis_freshweb_2026: a common_crawl_ranges build over the five 2026
   # crawls. All four common_crawl_ranges sources were withdrawn after eleven
@@ -134,51 +134,49 @@ sources:
   # honestly a year less current than planned -- but it is real 2025 web text
   # rather than the nothing the crawler delivered. The 2026 crawls are a 1.7
   # target, on a host with egress from compute and local scratch for the ledger.
-  - id: metis_freshweb_2025
-    label: Current general web and recent knowledge through CC-MAIN-2025-26
-    category: web
-    phase_tokens: {phase_a: 25000000000, phase_b: 7000000000, phase_c: 3000000000}
+- id: metis_freshweb_2025
+  label: Current general web and recent knowledge through CC-MAIN-2025-26
+  category: web
+  phase_tokens: {phase_a: 27001494303, phase_b: 5464588132, phase_c: 1717106313}
     # common_crawl_derived keeps the final publisher opt-out re-check on this
     # source. FineWeb is Common Crawl text filtered by a third party in
     # 2025-07, so anyone who withdrew since is still in it; the re-check used
     # to be gated on the common_crawl_ranges driver, which this no longer is.
-    provenance:
-      generated: false
-      transformed: false
-      fresh: true
-      freshness_bucket: general_web
-      common_crawl_derived: true
-    access:
-      type: huggingface
-      repo_id: HuggingFaceFW/fineweb
-      revision: 9bb295ddab0e05d785b879661af7260fed5140fc
-      gated: false
-      allow_patterns: [data/CC-MAIN-2025-21/*.parquet, data/CC-MAIN-2025-26/*.parquet]
+  provenance:
+    generated: false
+    transformed: false
+    fresh: true
+    freshness_bucket: general_web
+    common_crawl_derived: true
+  access:
+    type: huggingface
+    repo_id: HuggingFaceFW/fineweb
+    revision: 9bb295ddab0e05d785b879661af7260fed5140fc
+    gated: false
+    allow_patterns: [data/CC-MAIN-2025-21/*.parquet, data/CC-MAIN-2025-26/*.parquet]
       # Cold reserve: the four older 2025 dumps, held back so a shortfall widens
       # the window backwards inside 2025 instead of falling out of the freshness
       # bucket entirely. Nothing before CC-MAIN-2025-05 is eligible -- FineWeb's
       # 2024 dumps would satisfy the token count while destroying the property
       # this source exists for.
-      reserve_allow_patterns: [
-        data/CC-MAIN-2025-18/*.parquet, data/CC-MAIN-2025-13/*.parquet,
-        data/CC-MAIN-2025-08/*.parquet, data/CC-MAIN-2025-05/*.parquet]
-      cutoff_start: '2025-01-01'
-      cutoff_end: '2025-06-30'
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 1.10}
-    processing: {quality_profile: fresh_web_2026_v1, dedup_namespace: global_web, priority: 100}
+    reserve_allow_patterns: [data/CC-MAIN-2025-18/*.parquet, data/CC-MAIN-2025-13/*.parquet, data/CC-MAIN-2025-08/*.parquet, data/CC-MAIN-2025-05/*.parquet]
+    cutoff_start: '2025-01-01'
+    cutoff_end: '2025-06-30'
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 1.10}
+  processing: {quality_profile: fresh_web_2026_v1, dedup_namespace: global_web, priority: 100}
 
-  - id: fineweb_diversity_tail
-    label: FineWeb informal-language and diverse medium-quality tail
-    category: web
-    phase_tokens: {phase_a: 23000000000, phase_b: 10000000000, phase_c: 2000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: HuggingFaceFW/fineweb
-      revision: 9bb295ddab0e05d785b879661af7260fed5140fc
-      gated: false
-      allow_patterns: [data/**]
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.70}
-    processing: {quality_profile: web_diversity_v1, dedup_namespace: global_web, priority: 55}
+- id: fineweb_diversity_tail
+  label: FineWeb informal-language and diverse medium-quality tail
+  category: web
+  phase_tokens: {phase_a: 18839831903, phase_b: 3812823123, phase_c: 1198081629}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: HuggingFaceFW/fineweb
+    revision: 9bb295ddab0e05d785b879661af7260fed5140fc
+    gated: false
+    allow_patterns: [data/**]
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 4.06, compressed_bytes_per_token: 0.70}
+  processing: {quality_profile: web_diversity_v1, dedup_namespace: global_web, priority: 55}

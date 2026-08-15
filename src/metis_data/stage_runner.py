@@ -5,15 +5,27 @@ import gzip
 import hashlib
 import io
 import json
+
+try:  # orjson decodes these shards about 2.5x faster; stdlib json is the fallback
+    import orjson as _orjson
+
+    def _loads(value: Any) -> Any:
+        return _orjson.loads(value)
+
+except ImportError:  # pragma: no cover - exercised only where orjson is absent
+    def _loads(value: Any) -> Any:
+        return json.loads(value)
+
 import lzma
 import multiprocessing
 import os
 import shutil
 import sys
 import time
+from collections import deque
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Iterator, Sequence
 
 import pyarrow.parquet as pq
 import numpy as np
@@ -127,7 +139,7 @@ def _iter_rows(path: Path) -> Iterator[dict[str, Any]]:
         import zstandard as zstd
 
         raw = path.open("rb")
-        handle = io.TextIOWrapper(zstd.ZstdDecompressor().stream_reader(raw), encoding="utf-8")
+        handle = io.BufferedReader(zstd.ZstdDecompressor().stream_reader(raw), buffer_size=1 << 22)
     elif name.endswith(".jsonl.gz") or name.endswith(".json.gz"):
         handle = gzip.open(path, "rt", encoding="utf-8")
     elif name.endswith(".jsonl.xz") or name.endswith(".json.xz"):
@@ -145,7 +157,7 @@ def _iter_rows(path: Path) -> Iterator[dict[str, Any]]:
         for line in handle:
             if not line.strip():
                 continue
-            payload = json.loads(line)
+            payload = _loads(line)
             if isinstance(payload, dict):
                 yield payload
 
@@ -3227,8 +3239,7 @@ def _select(profile: dict[str, Any]) -> dict[str, Any]:
     def records() -> Iterator[dict[str, Any]]:
         token_root = root / directories["token_counts"]
         for task in token_contract["tasks"]:
-            path = token_root / task["output"]["path"]
-            yield from _iter_rows(path)
+            yield from _iter_rows(token_root / task["output"]["path"])
 
     payload = build_selection(
         records(),

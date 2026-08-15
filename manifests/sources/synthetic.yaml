@@ -1,69 +1,69 @@
 sources:
-  - id: nemotron_specialized_fact_seeking
-    label: Nemotron Specialized v1.2 grounded fact-seeking data
-    category: synthetic
-    phase_tokens: {phase_a: 5000000000, phase_b: 10000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
-    access: {type: huggingface, repo_id: nvidia/Nemotron-Pretraining-Specialized-v1.2, revision: 807afc1fa65c441d46ebc7d9b95295a35499a527, gated: false, allow_patterns: [Nemotron-Pretraining-Fact-Seeking/**]}
-    license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.54, compressed_bytes_per_token: 0.78}
+- id: nemotron_specialized_fact_seeking
+  label: Nemotron Specialized v1.2 grounded fact-seeking data
+  category: synthetic
+  phase_tokens: {phase_a: 5787959180, phase_b: 10418326524, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
+  access: {type: huggingface, repo_id: nvidia/Nemotron-Pretraining-Specialized-v1.2, revision: 807afc1fa65c441d46ebc7d9b95295a35499a527, gated: false, allow_patterns: [Nemotron-Pretraining-Fact-Seeking/**]}
+  license: {status: reviewed, expression: CC-BY-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.54, compressed_bytes_per_token: 0.78}
     # Fact-seeking rows are short question-and-answer pairs generated from a
     # prompt, not from a grounding document, so grounded_synthetic_v1 asked two
     # things of them that are not true: a source document they never had, and a
     # 200-character floor that most correct answers fall below.
-    processing: {quality_profile: synthetic_qa_v1, dedup_namespace: synthetic_grounded, priority: 96}
+  processing: {quality_profile: synthetic_qa_v1, dedup_namespace: synthetic_grounded, priority: 96}
 
-  - id: nemotron_v21_dqa
-    label: Nemotron-CC-v2.1 high-quality document-grounded QA
-    category: synthetic
-    phase_tokens: {phase_a: 4000000000, phase_b: 4000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
-    access: {type: huggingface, repo_id: nvidia/Nemotron-CC-v2.1, revision: ba6f2aaef7ada865bb08fc08640ca292150097db, gated: manual, allow_patterns: [High-Quality-DQA/**]}
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.75}
-    processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 95}
+- id: nemotron_v21_dqa
+  label: Nemotron-CC-v2.1 high-quality document-grounded QA
+  category: synthetic
+  phase_tokens: {phase_a: 1879080673, phase_b: 3382345211, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
+  access: {type: huggingface, repo_id: nvidia/Nemotron-CC-v2.1, revision: ba6f2aaef7ada865bb08fc08640ca292150097db, gated: manual, allow_patterns: [High-Quality-DQA/**]}
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.75}
+  processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 95}
 
-  - id: nemotron_specialized_reasoning_scicode
-    label: Nemotron specialized logic, algorithms, STEM reasoning, and scientific code
-    category: synthetic
-    phase_tokens: {phase_a: 4000000000, phase_b: 8000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
-      revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
-      gated: false
-      allow_patterns: [Nemotron-Pretraining-InfiniByte-Reasoning/**, Nemotron-Pretraining-Scientific-Coding/**]
-    license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.78}
+- id: nemotron_specialized_reasoning_scicode
+  label: Nemotron specialized logic, algorithms, STEM reasoning, and scientific code
+  category: synthetic
+  phase_tokens: {phase_a: 4728864842, phase_b: 8511956716, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
+    revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
+    gated: false
+    allow_patterns: [Nemotron-Pretraining-InfiniByte-Reasoning/**, Nemotron-Pretraining-Scientific-Coding/**]
+  license: {status: reviewed, expression: CC-BY-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 0.78}
     # The Nemotron-Pretraining-Specialized-v1 card documents the generators for
     # the InfiniByte-Reasoning and Scientific-Coding subsets (QwQ-32B,
     # Qwen3-235B-A22B-Thinking-2507, Qwen3-235B-A22B) and does not document any
     # verification of their outputs. verified_reasoning_v1 was therefore
     # unsatisfiable, and attesting the verification would have asserted
     # something NVIDIA does not claim.
-    processing: {quality_profile: synthetic_reasoning_v1, dedup_namespace: synthetic_reasoning, priority: 88}
+  processing: {quality_profile: synthetic_reasoning_v1, dedup_namespace: synthetic_reasoning, priority: 88}
 
-  - id: nemotron_wiki_rewrite
-    label: Nemotron Wiki structured factual explanations
-    category: synthetic
-    phase_tokens: {phase_a: 3000000000, phase_b: 3000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
-      revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
-      gated: false
-      allow_patterns: [Nemotron-Pretraining-Wiki-Rewrite/**]
-    license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.78}
-    processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 85}
+- id: nemotron_wiki_rewrite
+  label: Nemotron Wiki structured factual explanations
+  category: synthetic
+  phase_tokens: {phase_a: 1752728847, phase_b: 3154911924, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
+    revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
+    gated: false
+    allow_patterns: [Nemotron-Pretraining-Wiki-Rewrite/**]
+  license: {status: reviewed, expression: CC-BY-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.78}
+  processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 85}
 
-  - id: cosmopedia_v2
-    label: Cosmopedia v2 synthetic textbooks and explainers
-    category: synthetic
-    phase_tokens: {phase_a: 4000000000, phase_b: 4000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
+- id: cosmopedia_v2
+  label: Cosmopedia v2 synthetic textbooks and explainers
+  category: synthetic
+  phase_tokens: {phase_a: 5816056437, phase_b: 10468901587, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
     # The repo id 307-redirects to HuggingFaceTB/smollm-corpus, which carries
     # three configs: cosmopedia-v2, fineweb-edu-dedup and python-edu. The old
     # '**/*.parquet' matched all 673GB of them and the resolver filled its byte
@@ -73,10 +73,10 @@ sources:
     # It also duplicated the separately pinned fineweb_edu source.
     # 'cosmopedia-v2/**' matches 104 files / 122GB. Note the form: this repo's
     # matcher is fnmatch, so 'cosmopedia-v2/**/*.parquet' matches NOTHING.
-    access: {type: huggingface, repo_id: HuggingFaceTB/cosmopedia-v2, revision: 3ba9d605774198c5868892d7a8deda78031a781f, gated: false, allow_patterns: ['cosmopedia-v2/**']}
+  access: {type: huggingface, repo_id: HuggingFaceTB/cosmopedia-v2, revision: 3ba9d605774198c5868892d7a8deda78031a781f, gated: false, allow_patterns: ['cosmopedia-v2/**']}
     # The Hub card for this revision states odc-by; apache-2.0 was recorded here
     # in error.
-    license: {status: reviewed, expression: odc-by}
+  license: {status: reviewed, expression: odc-by}
     # The pattern alone leaves this source at 0%. The config ships prompt, text,
     # token_length, audience, format and seed_data, and no models_used or
     # genealogy column of any kind -- verified against the parquet footers of
@@ -88,16 +88,16 @@ sources:
     # record in Cosmopedia v2 was produced by the same pinned model, which the
     # dataset card names, and no per-row column could say anything the card does
     # not already fix for the whole corpus.
-    attestation_basis: >-
-      Cosmopedia v2 was generated in full by Mixtral-8x7B-Instruct-v0.1, stated
-      by the dataset card for this pinned revision. The generator is fixed for
-      the release, so it is a property of the corpus rather than of any record;
-      no released shard carries a per-row generator column that could restate
-      it. This attests the model that produced the text, and deliberately
-      attests nothing about verification, which the publisher does not report.
-    attestations:
-      genealogy:
-        generator_models: [Mixtral-8x7B-Instruct-v0.1]
+  attestation_basis: >-
+    Cosmopedia v2 was generated in full by Mixtral-8x7B-Instruct-v0.1, stated
+    by the dataset card for this pinned revision. The generator is fixed for
+    the release, so it is a property of the corpus rather than of any record;
+    no released shard carries a per-row generator column that could restate
+    it. This attests the model that produced the text, and deliberately
+    attests nothing about verification, which the publisher does not report.
+  attestations:
+    genealogy:
+      generator_models: [Mixtral-8x7B-Instruct-v0.1]
     # 0.75 was out by a factor of five and would have been silently self-
     # confirming: _select_files stops once selected bytes reach
     # candidate_tokens * this ratio, and the shortfall check divides those same
@@ -110,39 +110,39 @@ sources:
     # 104 shards, about 2.4B candidate tokens against an 8B budget, and reported
     # candidate_target_met. 122GB is on the Hub, so the correction costs only
     # download bytes.
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 3.86}
-    processing: {quality_profile: textbook_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 82}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.94, compressed_bytes_per_token: 3.86}
+  processing: {quality_profile: textbook_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 82}
 
-  - id: nemotron_math_textbooks
-    label: NVIDIA Nemotron source-grounded math textbooks and worked explanations
-    category: synthetic
-    phase_tokens: {phase_a: 3000000000, phase_b: 9000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
-      revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
-      gated: false
-      allow_patterns: [Nemotron-Pretraining-Math-Textbooks/**]
-    license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.78}
-    processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 94}
+- id: nemotron_math_textbooks
+  label: NVIDIA Nemotron source-grounded math textbooks and worked explanations
+  category: synthetic
+  phase_tokens: {phase_a: 6225889515, phase_b: 11206601128, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
+    revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
+    gated: false
+    allow_patterns: [Nemotron-Pretraining-Math-Textbooks/**]
+  license: {status: reviewed, expression: CC-BY-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.78}
+  processing: {quality_profile: grounded_synthetic_v1, dedup_namespace: synthetic_grounded, priority: 94}
 
-  - id: nemotron_rqa_verified_reasoning
-    label: NVIDIA Nemotron retrieval-grounded questions, derivations, and repairs
-    category: synthetic
-    phase_tokens: {phase_a: 2000000000, phase_b: 7000000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
-      revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
-      gated: false
-      allow_patterns: [Nemotron-Pretraining-RQA/**]
-    license: {status: reviewed, expression: CC-BY-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.78}
+- id: nemotron_rqa_verified_reasoning
+  label: NVIDIA Nemotron retrieval-grounded questions, derivations, and repairs
+  category: synthetic
+  phase_tokens: {phase_a: 5190066463, phase_b: 9342119634, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-Pretraining-Specialized-v1
+    revision: 9ed3718b5f2ae29074c5e34e64115432b7c4320f
+    gated: false
+    allow_patterns: [Nemotron-Pretraining-RQA/**]
+  license: {status: reviewed, expression: CC-BY-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.78}
     # See nemotron_specialized_reasoning_scicode. The subset name says
     # "verified"; the dataset card documents no verification step. The id is
     # left alone because it is bound into dedup and holdout state, but the
     # profile now states what is actually known about these rows.
-    processing: {quality_profile: synthetic_reasoning_v1, dedup_namespace: synthetic_reasoning, priority: 98}
+  processing: {quality_profile: synthetic_reasoning_v1, dedup_namespace: synthetic_reasoning, priority: 98}

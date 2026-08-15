@@ -1,50 +1,50 @@
 sources:
-  - id: nemotron_cc_math_4plus
-    label: Nemotron-CC-Math 4plus
-    category: math
-    phase_tokens: {phase_a: 20000000000, phase_b: 15000000000, phase_c: 5000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-CC-Math-v1
-      revision: 397a2502f2028c659ba411a6c4935b464a7f03aa
-      gated: auto
-      allow_patterns: [4plus/**]
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.78}
-    processing: {quality_profile: math_4plus_v1, dedup_namespace: global_math_web, priority: 100}
+- id: nemotron_cc_math_4plus
+  label: Nemotron-CC-Math 4plus
+  category: math
+  phase_tokens: {phase_a: 13461047604, phase_b: 11778416654, phase_c: 4287459884}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-CC-Math-v1
+    revision: 397a2502f2028c659ba411a6c4935b464a7f03aa
+    gated: auto
+    allow_patterns: [4plus/**]
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.44, compressed_bytes_per_token: 0.78}
+  processing: {quality_profile: math_4plus_v1, dedup_namespace: global_math_web, priority: 100}
 
-  - id: nemotron_cc_math_unique_3
-    label: Unique Nemotron-CC-Math score-3 explanations
-    category: math
-    phase_tokens: {phase_a: 8000000000, phase_b: 6000000000, phase_c: 1000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access:
-      type: huggingface
-      repo_id: nvidia/Nemotron-CC-Math-v1
-      revision: 397a2502f2028c659ba411a6c4935b464a7f03aa
-      gated: auto
-      allow_patterns: [3/**]
-    license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.78}
-    processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 85}
+- id: nemotron_cc_math_unique_3
+  label: Unique Nemotron-CC-Math score-3 explanations
+  category: math
+  phase_tokens: {phase_a: 10162794616, phase_b: 8892445289, phase_c: 3236937829}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access:
+    type: huggingface
+    repo_id: nvidia/Nemotron-CC-Math-v1
+    revision: 397a2502f2028c659ba411a6c4935b464a7f03aa
+    gated: auto
+    allow_patterns: [3/**]
+  license: {status: requires_acceptance, expression: NVIDIA-Data-Agreement-for-Model-Training}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 4.67, compressed_bytes_per_token: 0.78}
+  processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 85}
 
-  - id: nemotron_math_proofs
-    label: Nemotron Math Proofs natural-language and Lean proofs
-    category: math
-    phase_tokens: {phase_a: 3600000000, phase_b: 5400000000, phase_c: 0}
-    provenance: {generated: true, transformed: true, fresh: false}
+- id: nemotron_math_proofs
+  label: Nemotron Math Proofs natural-language and Lean proofs
+  category: math
+  phase_tokens: {phase_a: 52691039, phase_b: 46104659, phase_c: 0}
+  provenance: {generated: true, transformed: true, fresh: false}
     # This immutable release contains data/lean.jsonl; no Parquet payload exists.
-    access: {type: huggingface, repo_id: nvidia/Nemotron-Math-Proofs-v1, revision: 97229c590831adfe96202f5cd071d444d535bf91, gated: false, allow_patterns: ['data/*.jsonl']}
-    license: {status: reviewed, expression: CC-BY-SA-4.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.75}
-    processing: {quality_profile: proof_v1, dedup_namespace: global_math, priority: 95}
+  access: {type: huggingface, repo_id: nvidia/Nemotron-Math-Proofs-v1, revision: 97229c590831adfe96202f5cd071d444d535bf91, gated: false, allow_patterns: ['data/*.jsonl']}
+  license: {status: reviewed, expression: CC-BY-SA-4.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 2.74, compressed_bytes_per_token: 0.75}
+  processing: {quality_profile: proof_v1, dedup_namespace: global_math, priority: 95}
 
-  - id: proof_pile2_math
-    label: Proof-Pile-2 mathematical subset
-    category: math
-    phase_tokens: {phase_a: 3340000000, phase_b: 3510000000, phase_c: 2000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
+- id: proof_pile2_math
+  label: Proof-Pile-2 mathematical subset
+  category: math
+  phase_tokens: {phase_a: 318776129, phase_b: 278929113, phase_c: 101532949}
+  provenance: {generated: false, transformed: false, fresh: false}
     # Disjoint from proof_pile2_science by construction: that source takes
     # arxiv/train, this one takes algebraic-stack/train. Under the old shared
     # '**/*.jsonl.zst' both resolved against the identical 482-file set and all
@@ -62,7 +62,7 @@ sources:
     # 79 files / 7.58GB against a planned 8.63GB. The shortfall is tolerated
     # rather than fatal: manifests/replacements.yaml lists this source in a
     # math_organic chain, so the resolver's `short` flag does not raise.
-    access: {type: huggingface, repo_id: EleutherAI/proof-pile-2, revision: 901a9273a770e9d4138c5ddd91802f9c5c6cdc4b, gated: false, allow_patterns: ['algebraic-stack/train/*.jsonl.zst']}
+  access: {type: huggingface, repo_id: EleutherAI/proof-pile-2, revision: 901a9273a770e9d4138c5ddd91802f9c5c6cdc4b, gated: false, allow_patterns: ['algebraic-stack/train/*.jsonl.zst']}
     # `per_record_required` is wrong for this corpus and cost a whole normalize
     # run to learn. AlgebraicStack is heterogeneous in how it states provenance:
     # of 40 rows sampled per subset, agda, c, cpp, fortran, gap, haskell, idris,
@@ -80,15 +80,15 @@ sources:
     # Archive of Formal Proofs and Lean's mathlib, both openly licensed. Rows
     # that restate it are being generous, not authoritative, and demanding it of
     # the rows that do not restate it verifies nothing.
-    license: {status: reviewed, expression: algebraic-stack-permissive-per-component}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.65}
-    processing: {quality_profile: proof_v1, dedup_namespace: global_math_science, priority: 90}
+  license: {status: reviewed, expression: algebraic-stack-permissive-per-component}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.04, compressed_bytes_per_token: 0.65}
+  processing: {quality_profile: proof_v1, dedup_namespace: global_math_science, priority: 90}
 
-  - id: finemath_unique
-    label: FineMath unique high-quality math
-    category: math
-    phase_tokens: {phase_a: 2000000000, phase_b: 2000000000, phase_c: 1000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
+- id: finemath_unique
+  label: FineMath unique high-quality math
+  category: math
+  phase_tokens: {phase_a: 747431866, phase_b: 654002882, phase_c: 238063502}
+  provenance: {generated: false, transformed: false, fresh: false}
     # Four configs, and the 4plus tiers are nested subsets of the 3plus ones --
     # confirmed against the data rather than the card: every int_score>=4 row in
     # finemath-3plus carries a raw score >= 3.5, exactly the floor finemath-4plus
@@ -97,16 +97,16 @@ sources:
     # wants math_score >= 3, which is what finemath-3plus is.
     # 'finemath-3plus/**' matches 128 files / 65GB; 'finemath-3plus/**/*.parquet'
     # matches nothing under this repo's fnmatch-based matcher.
-    access: {type: huggingface, repo_id: HuggingFaceTB/finemath, revision: e92b25a616738fe95dc186b64dfb19f9c8525594, gated: false, allow_patterns: ['finemath-3plus/**']}
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 80}
+  access: {type: huggingface, repo_id: HuggingFaceTB/finemath, revision: e92b25a616738fe95dc186b64dfb19f9c8525594, gated: false, allow_patterns: ['finemath-3plus/**']}
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 80}
 
-  - id: megamath_unique
-    label: MegaMath unique mathematical material
-    category: math
-    phase_tokens: {phase_a: 2000000000, phase_b: 2000000000, phase_c: 1000000000}
-    provenance: {generated: false, transformed: false, fresh: false}
+- id: megamath_unique
+  label: MegaMath unique mathematical material
+  category: math
+  phase_tokens: {phase_a: 191831936, phase_b: 167852944, phase_c: 61100127}
+  provenance: {generated: false, transformed: false, fresh: false}
     # Redirects to IFM/MegaMath, six configs. This profile is math PROSE
     # (equation_integrity required, math_score >= 3), and the manifest declares
     # provenance generated=false, so megamath-code and megamath-translated-code
@@ -115,52 +115,52 @@ sources:
     # taking both would double-count the same documents and would contradict
     # generated=false. megamath-web is the one config that satisfies all three
     # constraints at once: 4,950 files / 887GB, far beyond the 5B budget.
-    access: {type: huggingface, repo_id: LLM360/MegaMath, revision: 3cbc64616594d6bc8759abaa0b2a71858f880f0d, gated: false, allow_patterns: ['megamath-web/**']}
+  access: {type: huggingface, repo_id: LLM360/MegaMath, revision: 3cbc64616594d6bc8759abaa0b2a71858f880f0d, gated: false, allow_patterns: ['megamath-web/**']}
     # Was per_record_required/per-component, which no row can satisfy: MegaMath
     # ships text with no license column, because Common Crawl derivatives have
     # no per-document license to ship. The grant that does exist is the
     # publisher's over the compilation, declared ODC-By on the dataset card --
     # the same shape already recorded for metis_freshweb_2025 (FineWeb).
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 78}
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.15, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 78}
 
-  - id: openwebmath_unique
-    label: OpenWebMath equation-rich web text
-    category: math
-    phase_tokens: {phase_a: 1000000000, phase_b: 1000000000, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
+- id: openwebmath_unique
+  label: OpenWebMath equation-rich web text
+  category: math
+  phase_tokens: {phase_a: 362643084, phase_b: 317312699, phase_c: 115504953}
+  provenance: {generated: false, transformed: false, fresh: false}
     # Only `data/` and `imgs/` exist here; scoping to data/ keeps the resolver
     # from listing the image tree. Behaviour is unchanged -- imgs holds no
     # parquet -- but the pin now states which directory is the corpus.
-    access: {type: huggingface, repo_id: open-web-math/open-web-math, revision: fde8ef8de2300f5e778f56261843dab89f230815, gated: false, allow_patterns: ['data/**']}
+  access: {type: huggingface, repo_id: open-web-math/open-web-math, revision: fde8ef8de2300f5e778f56261843dab89f230815, gated: false, allow_patterns: ['data/**']}
     # See megamath_unique. The card states OpenWebMath is released under
     # ODC-By-1.0 and that users should also abide by the Common Crawl terms of
     # use, which is a corpus-level grant, not a per-record one.
-    license: {status: reviewed, expression: ODC-By-1.0}
-    acquisition: {driver: hf_snapshot, candidate_multiplier: 3.45, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 70}
+  license: {status: reviewed, expression: ODC-By-1.0}
+  acquisition: {driver: hf_snapshot, candidate_multiplier: 3.45, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: math_score3_v1, dedup_namespace: global_math_web, priority: 70}
 
-  - id: formal_theorem_corpora
-    label: Lean, Isabelle AFP, Coq, and Metamath corpora
-    category: math
-    phase_tokens: {phase_a: 60000000, phase_b: 90000000, phase_c: 0}
-    provenance: {generated: false, transformed: false, fresh: false}
-    access: {type: canonical_registry, registry: manifests/registries/systems_formal.yaml, selector: formal_math}
-    license: {status: reviewed, expression: canonical-source-license}
+- id: formal_theorem_corpora
+  label: Lean, Isabelle AFP, Coq, and Metamath corpora
+  category: math
+  phase_tokens: {phase_a: 21848204, phase_b: 19117179, phase_c: 6958844}
+  provenance: {generated: false, transformed: false, fresh: false}
+  access: {type: canonical_registry, registry: manifests/registries/systems_formal.yaml, selector: formal_math}
+  license: {status: reviewed, expression: canonical-source-license}
     # formal_proof_v1 requires parser_or_compiler_passed, and this pipeline runs
     # no Lean, Coq, Isabelle, or Metamath toolchain -- so no record could ever
     # satisfy it and the source normalized to zero. The property is real but it
     # holds of the corpus, not of anything measurable here.
-    attestation_basis: >-
-      Every member of this registry is a released, tagged snapshot of a formal
-      library whose own continuous integration compiles the entire development
-      before publication -- mathlib, the Archive of Formal Proofs, the Coq
-      standard library, and the Metamath set.mm database. Machine-checkability
-      is the defining property of these artifacts rather than an assertion made
-      about them here. Re-running the toolchains would reproduce that result,
-      not establish it.
-    attestations:
-      parser_or_compiler_passed: true
-    acquisition: {driver: canonical_git, candidate_multiplier: 2.03, compressed_bytes_per_token: 0.72}
-    processing: {quality_profile: formal_proof_v1, dedup_namespace: global_formal, priority: 98}
+  attestation_basis: >-
+    Every member of this registry is a released, tagged snapshot of a formal
+    library whose own continuous integration compiles the entire development
+    before publication -- mathlib, the Archive of Formal Proofs, the Coq
+    standard library, and the Metamath set.mm database. Machine-checkability
+    is the defining property of these artifacts rather than an assertion made
+    about them here. Re-running the toolchains would reproduce that result,
+    not establish it.
+  attestations:
+    parser_or_compiler_passed: true
+  acquisition: {driver: canonical_git, candidate_multiplier: 2.03, compressed_bytes_per_token: 0.72}
+  processing: {quality_profile: formal_proof_v1, dedup_namespace: global_formal, priority: 98}
