@@ -1239,3 +1239,62 @@ document. This is not an argument against the increase. It is an argument for
 covering character-level composition in post-training rather than expecting the
 tokenizer to supply it, and for not confusing 17a with a fix for it: splitting
 digits helps arithmetic, and does nothing for letters.
+
+### 17d. `preserve_code_whitespace` is declared and does nothing
+
+The manifest has claimed two tokenizer properties since the 1.6 recipe was
+written:
+
+```yaml
+tokenizer:
+  preserve_code_whitespace: true
+  preserve_latex: true
+```
+
+Neither string appears anywhere in `src/`. They are read by nothing, and the
+tokenizer was trained without them. This is the failure mode this document
+already names as dominant: not a crash, a setting that looks satisfied.
+
+The consequence is measurable in the trained 1.6 tokenizer:
+
+```
+'    '      -> ['Ġ','Ġ','Ġ','Ġ']              4 tokens
+'        '  -> ['Ġ','Ġ','Ġ','Ġ','Ġ','Ġ','Ġ','Ġ']  8 tokens
+```
+
+Every level of Python indentation costs four tokens per line. The GPT-2
+byte-level regex, which `use_regex=True` selects, does not merge runs of
+whitespace; later tokenizers add explicit whitespace tokens for exactly this
+reason. On a corpus carrying 160B tokens of code, indentation alone is a
+material share of the code budget, spent on nothing.
+
+The rest of the code handling is good, and worth recording so the fix is not
+overstated: `});`, `->`, `!=`, `===`, `()`, `{}` and `[]` are each a single
+token, and round trips are lossless on Python, LaTeX, emoji, CJK and raw bytes
+thanks to `byte_fallback`.
+
+**For 1.7:** either implement the flag with a whitespace-merging pre-tokenizer
+ahead of the byte-level one, or delete both keys. A declared property that
+nothing reads is worse than an absent one, because it answers the question
+nobody then re-asks. Whichever is chosen, add a test that asserts the trained
+tokenizer's behaviour rather than the presence of the setting.
+
+### 17e. Measured on the finished 1.6 tokenizer
+
+| content | bytes/token |
+|---|---|
+| prose | 5.91 |
+| python | 2.89 |
+| json | 2.50 |
+| latex | 2.43 |
+| **corpus average** | **4.039** |
+
+The corpus average is the number that matters, and it is measured with the real
+tokenizer rather than the 3.817 estimated in §15 from a 50MB stand-in. At 4.039
+the 3.503 TB corpus is **867B tokens**, against a 950B unique target and the
+973.7B the r1 projection predicted. §15 is settled by measurement in the
+direction it warned about: the corpus is short, not long. `token_count` remains
+the authority and runs next.
+
+Single-process encode throughput is 14.3 MB/s, so a full-corpus encode is about
+1.4 h at 48 concurrent processes.
