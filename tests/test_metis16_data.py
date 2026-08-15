@@ -47,9 +47,10 @@ from metis_data.local_download import (
     _supervisor_lock,
 )
 from metis_data.manifest import (
-    FRESHNESS_LAYER_TOKENS,
+    MINIMUM_FRESHNESS_SHARE,
     load_manifest,
     matches_any,
+    total_phase_tokens,
     validate_manifest,
 )
 from metis_data.packing import pack_release
@@ -76,24 +77,59 @@ class ManifestTests(unittest.TestCase):
         result = validate_manifest()
         self.assertTrue(result.ok, result.errors)
         manifest = result.manifest
-        self.assertEqual(manifest["schedule"]["target_tokens"], 1_000_000_000_000)
-        self.assertEqual(manifest["schedule"]["unique_target_tokens"], 950_000_000_000)
-        self.assertEqual(manifest["schedule"]["replay_target_tokens"], 50_000_000_000)
+        # Refitted from measured supply. The 1T/950B/50B plan was aspirational:
+        # token_count measured 849.5B available, so the schedule was rebuilt at
+        # 90% of what each category actually has. These are pinned so the mix
+        # cannot drift by accident, but they are a release-specific fact, not a
+        # law -- refitting the mix is expected to move them deliberately.
+        schedule = manifest["schedule"]
+        self.assertEqual(schedule["target_tokens"], 804_755_808_835)
+        self.assertEqual(schedule["unique_target_tokens"], 764_518_018_395)
+        self.assertEqual(schedule["replay_target_tokens"], 40_237_790_440)
+        # The relationships hold through any refit and are what actually matter.
         self.assertEqual(
-            manifest["schedule"]["phases"]["phase_b"]["unique_tokens"],
-            250_000_000_000,
+            schedule["unique_target_tokens"] + schedule["replay_target_tokens"],
+            schedule["target_tokens"],
         )
         self.assertEqual(
-            manifest["schedule"]["phases"]["phase_b"]["replay_tokens"],
+            sum(
+                int(phase["unique_tokens"])
+                for phase in schedule["phases"].values()
+            ),
+            schedule["unique_target_tokens"],
+        )
+        self.assertEqual(
+            sum(
+                int(phase["replay_tokens"])
+                for phase in schedule["phases"].values()
+            ),
+            schedule["replay_target_tokens"],
+        )
+        self.assertEqual(
+            schedule["phases"]["phase_b"]["unique_tokens"],
+            209_668_641_449,
+        )
+        self.assertEqual(
+            schedule["phases"]["phase_b"]["replay_tokens"],
             0,
         )
-        # Was 90B across four buckets. Three were withdrawn because every fresh
-        # source used the common_crawl_ranges driver, which this generation's
-        # acquisition host cannot run; general web survives on FineWeb's
-        # packaged extraction. Pinned to the validator constant so the number
-        # can only move by editing manifest.py deliberately.
+        # Was 90B across four buckets, then pinned to a constant. Both are the
+        # wrong shape: the layer is as large as the fresh sources actually
+        # supply, so a constant only forces the declaration and the sources to
+        # be edited in lockstep. Pin the two invariants the validator enforces
+        # instead -- the declaration matches its sources, and the layer is a
+        # meaningful share rather than a rounding error.
+        fresh_tokens = sum(
+            total_phase_tokens(source)
+            for source in manifest["sources"]
+            if source.get("provenance", {}).get("fresh")
+        )
         self.assertEqual(
-            manifest["freshness_layer"]["target_tokens"], FRESHNESS_LAYER_TOKENS
+            manifest["freshness_layer"]["target_tokens"], fresh_tokens
+        )
+        self.assertGreaterEqual(
+            fresh_tokens,
+            MINIMUM_FRESHNESS_SHARE * manifest["schedule"]["total_tokens"],
         )
         self.assertEqual(manifest["tokenizer"]["vocabulary_size_including_special_tokens"], 65_536)
         source_ids = [source["id"] for source in manifest["sources"]]
@@ -228,7 +264,7 @@ class ManifestTests(unittest.TestCase):
                 "gate_index": 0,
                 "gate_target_tokens": CONTEXT_GATES[0],
                 "lane": "natural_long",
-                "source_id": "finewiki",
+                "source_id": "metis_freshweb_2025",
                 "domain": "general_reference",
                 "tokens": 100,
             }

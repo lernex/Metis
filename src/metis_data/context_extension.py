@@ -444,13 +444,29 @@ def build_context_pack_plan(
     domain_order = [
         str(group["id"]) for group in plan["fallbacks"]["groups"]
     ]
-    if len(domain_order) != 7 or len(set(domain_order)) != 7:
+    if len(domain_order) != len(set(domain_order)):
+        raise AssertionError("context fallback domains must be unique")
+    # The dependency-constructed lane packs one task per domain, so the domain
+    # count is part of the per-gate task budget rather than a free parameter.
+    # This was pinned at seven, which silently made the packer depend on the
+    # number of fallback groups in the plan: dropping a domain for lack of
+    # supply left 93 tasks against a required 96 and failed here, two stages
+    # after the decision. Derive the split instead. At seven domains this
+    # yields the historical 22/3/7.
+    tasks_per_gate, remainder = divmod(pack_tasks, len(CONTEXT_GATES))
+    if remainder:
+        raise AssertionError("context pack tasks do not divide over gates")
+    replay_tasks = 3
+    natural_tasks = tasks_per_gate - replay_tasks - len(domain_order)
+    if natural_tasks < replay_tasks:
         raise AssertionError(
-            "dependency construction requires exactly seven ordered domains"
+            f"{len(domain_order)} context domains leave only {natural_tasks} "
+            f"tasks per gate for the natural-long lane, which carries "
+            f"{CONTEXT_SEQUENCE_MIX['natural_long']:.0%} of the mix"
         )
     lane_task_counts = {
-        "natural_long": 22,
-        "short_replay": 3,
+        "natural_long": natural_tasks,
+        "short_replay": replay_tasks,
     }
     for gate_index, gate_target in enumerate(CONTEXT_GATES):
         gate_tokens = gate_target - (
