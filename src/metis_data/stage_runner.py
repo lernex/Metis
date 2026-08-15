@@ -2591,6 +2591,7 @@ def _tokenizer_train(profile: dict[str, Any]) -> dict[str, Any]:
         output_dir=output_dir,
         vocabulary_size=int(manifest["tokenizer"]["vocabulary_size_including_special_tokens"]),
         special_tokens=list(manifest["tokenizer"]["special_tokens"]),
+        split_digits=bool(manifest["tokenizer"].get("split_digits", False)),
     )
     audit_limits: dict[str, int] = {}
 

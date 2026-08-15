@@ -45,11 +45,23 @@ def train_tokenizer(
     vocabulary_size: int,
     special_tokens: list[str],
     minimum_frequency: int = 2,
+    split_digits: bool = False,
 ) -> dict[str, Any]:
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     tokenizer = Tokenizer(models.BPE(unk_token=None, byte_fallback=True))
-    tokenizer.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=False, use_regex=True)
+    byte_level = pre_tokenizers.ByteLevel(add_prefix_space=False, use_regex=True)
+    if split_digits:
+        # The GPT-2 byte-level regex matches runs of digits, so 147832 becomes
+        # one pre-token and BPE is free to merge it into a single id. A model
+        # then has no positional handle on the digits and place value has to be
+        # memorised per literal rather than learned once. Splitting them first
+        # is the current standard and costs only the tokens it stops merging.
+        tokenizer.pre_tokenizer = pre_tokenizers.Sequence(
+            [pre_tokenizers.Digits(individual_digits=True), byte_level]
+        )
+    else:
+        tokenizer.pre_tokenizer = byte_level
     tokenizer.decoder = decoders.ByteLevel()
     trainer = trainers.BpeTrainer(
         vocab_size=vocabulary_size,

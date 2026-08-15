@@ -1187,3 +1187,55 @@ release is mid-flight is how the next silent defect gets introduced. It wants a
 deliberate pass with the per-stage tests written first, at the start of a release
 cycle rather than the end of one. Until it lands, the drift override is the
 pressure valve and its reason string says so.
+
+---
+
+## 17. Tokenizer decisions for 1.7, and one that is not about vocabulary size
+
+### 17a. Split digits. This is the highest-leverage tokenizer change available.
+
+1.6 trains with the GPT-2 byte-level regex, which matches *runs* of digits, so
+BPE is free to merge a whole literal into one id:
+
+```
+'The year 2026 cost $147832.55'
+  -> ['The', 'Ġyear', 'Ġ2026', 'Ġcost', 'Ġ$', '147832', '.', '55']
+'x = 1234567'
+  -> ['x', 'Ġ=', 'Ġ1234567']
+```
+
+`147832` and `1234567` are single pre-tokens. A model given one id for a
+seven-digit number has no positional handle on its digits, so place value has to
+be memorised per literal instead of learned once. Current practice is individual
+digit tokens, and it is listed as settled rather than contested.
+
+`manifest.tokenizer.split_digits` now controls this and defaults to `false`,
+which reproduces 1.6 exactly. **For 1.7: set it true.** It is worth more than the
+vocabulary increase and costs only the merges it prevents.
+
+### 17b. A 131,072 vocabulary does not fit in uint16
+
+`storage.final_token_dtype: uint16` holds 0-65,535, and 1.6's vocabulary is
+65,536: ids 0-65,535, every value used, nothing wasted. That is not a
+coincidence, it is the tightest packing available, and it is why the packed
+corpus is ~1.82 TiB rather than twice that.
+
+1.7's 131,072 needs ids up to 131,071, which is 17 bits. **For 1.7: set
+`final_token_dtype: uint32` at the same time as the vocabulary, and budget
+~3.64 TiB for the packed corpus instead of ~1.82 TiB.** Decided rather than
+discovered at `pack`.
+
+### 17c. A larger vocabulary makes character-level tasks slightly worse
+
+Worth stating because the intuition runs the other way. A bigger vocabulary
+means a word is more likely to be one token, and a token is atomic: nothing in
+the embedding for `strawberry` encodes that it contains three `r`s. A smaller
+vocabulary splits words into more pieces and leaks marginally more
+character-level signal.
+
+So 1.7 at 131k will be marginally *worse* than 1.6 at 65k on letter-counting,
+and better on nearly everything else -- multilingual coverage, code, tokens per
+document. This is not an argument against the increase. It is an argument for
+covering character-level composition in post-training rather than expecting the
+tokenizer to supply it, and for not confusing 17a with a fix for it: splitting
+digits helps arithmetic, and does nothing for letters.
