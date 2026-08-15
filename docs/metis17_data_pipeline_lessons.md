@@ -1469,3 +1469,57 @@ survey never has to parse document text at all. Together those turn 3.8 TB of
 scanning into about 1.4. Both selection stages are also `tasks_per_job: 1`
 serial reducers over the whole corpus, so §12's shard splitting does not help
 them; they need sharding of their own.
+
+## 21. A stage-module key that matches no stage fails open, to everything
+
+`stage_code.py` maps each stage to the modules whose behaviour it depends on,
+and falls back when a stage is not in the map:
+
+```python
+if stage in STAGE_MODULES:
+    names = tuple(COMMON_MODULES) + tuple(STAGE_MODULES[stage])
+else:
+    # Unmapped stage: bind to everything rather than guess.
+    names = _all_module_names()
+```
+
+The map contains the key `"context"`. The stages are named `context_select`,
+`context_prepare`, `context_pack` and `context_verify`. No stage is called
+`context`, so that entry has never once been read, and all four context stages
+take the fallback and bind to **every module in the package**. Any edit
+anywhere in `src/metis_data/` moves their execution contract.
+
+Writing the check found six more: `tokenizer_sample_scan`,
+`tokenizer_sample_plan`, `verify_shard`, `cleanup_selection_inputs`,
+`cleanup_pack_inputs` and `cleanup_release_workspace` were never in the map
+either. Ten of the build graph's stages were binding the whole package,
+including `context_select`, which is the longest single stage in the pipeline.
+
+The fallback is the right instinct -- an unmapped stage should over-bind rather
+than under-bind, because under-binding silently reuses work that the changed
+code would not have produced. What is wrong is that the two cases are
+indistinguishable at runtime. A deliberate "bind to everything" and a typo'd
+key produce identical behaviour, and the typo costs the most on exactly the
+stages that run longest.
+
+The fallback is also the reason this stayed invisible. Over-binding never
+produces a wrong answer, only unnecessary re-runs and unnecessary contract
+drift, and both look like ordinary pipeline friction rather than a bug.
+
+For 1.7, make the map total and check it:
+
+- `tests/test_stage_code_map_is_total.py` asserts every stage in `BUILD_GRAPH`
+  is mapped, which is the direction that matters: the map already spells out
+  empty tuples for stages with no dedicated modules, so absence means oversight
+  rather than "nothing to bind". Orphan keys in the other direction are fine --
+  `download`, `holdouts` and the handoff stages run outside the build graph.
+- Keep the permissive fallback for genuinely unmapped stages, but have it warn
+  by name so the next typo announces itself instead of quietly costing an hour.
+- Split `COMMON_MODULES` per §13 as well. These are the same defect at two
+  levels: §13 is a guard that binds more than it protects, and this is a guard
+  that binds everything because it protects nothing it can find.
+
+This is the ninth instance of the pattern §13 opened, and the cheapest to fix.
+It is also the clearest statement of why the pattern keeps recurring: every one
+of these guards is correct-but-broad, so it never produces a wrong artifact,
+only delay -- and delay is not the kind of failure that gets a bug filed.
