@@ -1660,7 +1660,71 @@ def _priority(doc: Any) -> int:
     return int(doc.metadata.get("priority", 1))
 
 
-def _local_executor(profile: dict[str, Any], stage: str, task_index: int, tasks: int, pipeline: list[Any]) -> None:
+def _stat_total(value: Any) -> int:
+    """DataTrove records a counter either as a scalar or as a summary dict."""
+
+    if isinstance(value, dict):
+        try:
+            return int(value.get("total", 0))
+        except (TypeError, ValueError):
+            return 0
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _datatrove_task_counts(logs: Path, rank: int) -> dict[str, Any]:
+    """What a filtering task read and what it emitted, from DataTrove's own stats.
+
+    The completion markers recorded that a stage finished and nothing about what
+    it did, so after the paired cleanup retired the intermediate corpus there was
+    no way to answer "how many documents did this pass remove" -- not from the
+    receipts and not from the leftovers, because the predecessor it would be
+    compared against is gone. That number decides whether the corpus clears
+    minimum_unique_tokens, and it was only knowable at token_count, twenty-odd
+    stages later.
+
+    DataTrove already writes it. This only folds it into the marker, where it
+    outlives the data it describes.
+    """
+
+    path = logs / "stats" / f"{rank:05d}.json"
+    if not path.is_file():
+        return {}
+    try:
+        steps = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if not isinstance(steps, list) or not steps:
+        return {}
+
+    def stats_of(step: Any) -> dict[str, Any]:
+        return step.get("stats", {}) if isinstance(step, dict) else {}
+
+    first, last = stats_of(steps[0]), stats_of(steps[-1])
+    counts: dict[str, Any] = {
+        "records_in": _stat_total(first.get("documents") or first.get("total")),
+        "bytes_in": _stat_total(first.get("doc_len")),
+        "records_out": _stat_total(last.get("total") or last.get("documents")),
+        "bytes_out": _stat_total(last.get("doc_len")),
+    }
+    # Reasons live on whichever step did the dropping, so collect across all of
+    # them rather than guessing which one is the filter.
+    removed: dict[str, int] = {}
+    for step in steps:
+        for key, value in stats_of(step).items():
+            if str(key).startswith("dropped_"):
+                removed[str(key)] = removed.get(str(key), 0) + _stat_total(value)
+    if removed:
+        counts["removed_by_reason"] = dict(sorted(removed.items()))
+    if counts["records_in"] and counts["records_out"] <= counts["records_in"]:
+        counts["records_removed"] = counts["records_in"] - counts["records_out"]
+        counts["bytes_removed"] = max(0, counts["bytes_in"] - counts["bytes_out"])
+    return counts
+
+
+def _local_executor(profile: dict[str, Any], stage: str, task_index: int, tasks: int, pipeline: list[Any]) -> Path:
     from datatrove.executor.local import LocalPipelineExecutor
 
     root, state = _paths(profile)
@@ -1683,6 +1747,7 @@ def _local_executor(profile: dict[str, Any], stage: str, task_index: int, tasks:
         skip_completed=True,
     )
     executor.run()
+    return logs
 
 
 def _datatrove_stage(profile: dict[str, Any], stage: str, task_index: int) -> dict[str, Any]:
@@ -2179,6 +2244,19 @@ def _datatrove_stage(profile: dict[str, Any], stage: str, task_index: int) -> di
         ),
         "completed_at": utc_now(),
     }
+    # Costs one small JSON read and turns the late minimum_unique_tokens gate
+    # into something predictable from the receipts alone. The path is the one
+    # _local_executor builds, derived rather than passed so that stages which
+    # run their own writers are covered too.
+    counts = _datatrove_task_counts(
+        root
+        / directories["logs"]
+        / stage
+        / payload["execution_contract_sha256"][:24],
+        task_index,
+    )
+    if counts:
+        payload["counts"] = counts
     state.complete(stage, f"task-{task_index:06d}", payload)
     return payload
 

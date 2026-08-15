@@ -1131,3 +1131,59 @@ measurement is if anything optimistic.
 submission-time projection as the answer.** The gate that matters fires at
 `select`, stage 33 of 37; a two-hour measurement immediately after
 `final_hash_filter` is worth more than a projection at submission.
+
+---
+
+## 16. Status of the 1.7 changes, and what is deliberately not done
+
+Added 2026-08-14, while the 1.6 tokenizer trained.
+
+**Landed on `main`, shipped disabled, safe to enable before the next release:**
+
+| change | where | enable by |
+|---|---|---|
+| striped task assignment | `_task_indices`, `stage.sbatch` | `scheduler.stride_task_assignment` (already defaults on for new submissions) |
+| byte-bounded input splitting | `_split_oversized` | `storage.maximum_input_bytes: 1_000_000_000` |
+| tuning scoped to decontam stages | `_DECONTAMINATION_TUNED_STAGES` | already scoped |
+| 8-gram and code-skeleton rules disablable | `ContaminationIndex.build` | set both minimums to `0` |
+| tokenizer sample shortfall tolerance | `_tokenizer_sample_plan` | `gates.tokenizer_sample_shortfall_tolerance` |
+| recorded contract-drift override | `_filter_chain_drift_allowed` | `gates.allow_filter_chain_contract_drift` + a written reason |
+
+**Landed on branch `metis17-fixes`:**
+
+*§10f, filtering stages record what they removed.* DataTrove already writes
+per-rank counts to `logging_dir/stats/{rank}.json`; the completion marker simply
+never read them. `_datatrove_task_counts` folds `records_in/out`,
+`bytes_in/out`, `records_removed` and `removed_by_reason` into every filtering
+stage's marker, where they outlive the corpus the paired cleanup retires.
+
+Validated against the r2 decontamination stats across all 3,274 ranks:
+
+```
+records_in   1,081,933,951
+records_out  1,047,469,393
+removed         34,464,558   (3.185%)
+   short_ngram          15,024,711     ngram           8,388,537
+   contiguous_run        4,825,402     code_skeleton   3,918,560
+   code_ngram            2,307,231     exact                 117
+```
+
+Those supersede the figures in §14, which came from parsing `.err` files and
+missed the 294 shards whose stat blocks had not been flushed. The direction is
+unchanged and short_ngram is still the largest contributor at 43.6%.
+
+**Deliberately not done: splitting `stage_runner.py` per stage.**
+
+This is the root cause of §0, §13, and the four separate refusals that blocked
+the 1.6 tokenizer sample -- the plan gate, the filter-chain receipt, the
+acquisition handoff fingerprint, and a frozen-input identity that moved because
+an unrelated function in the same file did. `COMMON_MODULES` contains
+`stage_runner.py`, so every stage's identity moves when any stage's
+implementation does, and no guard downstream can tell a dangerous change from an
+irrelevant one.
+
+It is 4,500 lines holding every stage in the build, and doing it hastily while a
+release is mid-flight is how the next silent defect gets introduced. It wants a
+deliberate pass with the per-stage tests written first, at the start of a release
+cycle rather than the end of one. Until it lands, the drift override is the
+pressure valve and its reason string says so.
