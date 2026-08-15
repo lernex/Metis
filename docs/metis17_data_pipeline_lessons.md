@@ -1298,3 +1298,81 @@ the authority and runs next.
 
 Single-process encode throughput is 14.3 MB/s, so a full-corpus encode is about
 1.4 h at 48 concurrent processes.
+
+---
+
+## 18. Measure, then allocate. Do not allocate, then discover.
+
+The 1.6 schedule fixed every number in advance -- 1T tokens, 950B unique, phases
+of 700/250/50B, and a per-source exposure for all fifty sources -- and only
+discovered at `token_count`, stage 27, what the corpus could actually supply.
+It supplied ~843B, and not in the shape the schedule assumed:
+
+| category | target | available | ratio |
+|---|---|---|---|
+| web | 525 B | 344 B | 0.65 |
+| code | 160 B | 183 B | 1.14 |
+| science | 125 B | 96 B | 0.77 |
+| math | 85 B | 49 B | 0.58 |
+| synthetic | 70 B | 89 B | 1.26 |
+| reference | 25 B | 69 B | 2.75 |
+| multilingual | 10 B | 12 B | 1.17 |
+
+Because `global_fallback` is forbidden, the achievable total is set by the worst
+category, not the sum. Holding the intended ratios caps the build at ~578B, not
+the 843B the totals suggest.
+
+**For 1.7: acquire broadly, prepare fully, then derive the schedule from what
+exists.** Fix the source list and the quality ordering in advance; fix the
+numbers afterwards. Phases become proportions resolved after measurement rather
+than the absolute token counts that blocked this build.
+
+Three things that approach has to get right.
+
+**Yield is not a per-source property.** `nemotron_cc_math_4plus` is
+deduplicated against finemath, megamath, openwebmath and the web crawl, so its
+contribution depends on what else is in the corpus. Sampling a source alone
+overstates it. This is the argument for preparing the whole corpus before
+allocating, and it is why a cheaper per-source probe cannot substitute.
+
+**Availability is not merit.** Allocating in proportion to what survives hands
+the corpus to whatever deduplicates well: on this build that is public-domain
+books and PubMed, at 2.75x and 2.71x their targets, neither of which earned a
+larger share. Keep the intended ordering and cap it by availability, backfilling
+from the best available alternative -- which is what
+`ordered_same_category_replacement` already says and what ran too late to help.
+
+**Measure yield after normalize, not after the whole pipeline.** Full
+preparation before checking acquisition is the expensive version of the same
+mistake. A per-source retained-bytes check against the upstream published counts,
+run once normalize completes, is where `nemotron_cc_math_4plus` at roughly 46%
+of NVIDIA's published 52B tokens becomes visible while re-acquiring is still
+cheap. §11 asked for this as a submission gate; it belongs at both ends.
+
+### 18a. The two failures behind "we are short on math" are not the same failure
+
+Worth separating, because they have different fixes.
+
+`nemotron_cc_math_4plus` was **under-acquired**. 62.19 GB compressed expanded to
+95.84 GB of text and counted 26.4B tokens -- consistent, nothing lost. The
+manifest asked for 40B of exposure from a source only ~24B of which was
+downloaded. The fix is acquisition, not tuning.
+
+`nemotron_math_proofs` was **consumed by the pipeline**. 29.53 GB of
+uncompressed `lean.jsonl` left 0.31 GB of text, about 99%. Lean and Mathlib are
+pathologically repetitive, so aggressive span and MinHash dedup shredding them is
+plausible rather than obviously wrong -- but it is not currently decidable from
+the receipts, which is §10f exactly: the filtering stages never recorded what
+they removed. Decide it in 1.7 with the per-stage counts, and if the loss is
+legitimate, stop budgeting 9B tokens from a source that can only ever yield a
+fraction of that.
+
+### 18b. Per-shard tracing across stages does not work
+
+Recorded so the next person does not spend an hour on it. DataTrove's readers
+shard a stage's *file list* across ranks, so shard N at one stage does not hold
+the documents shard N held at the previous one. On this build
+`eligible/exact/01773.jsonl.gz` is 177 MB while
+`eligible/repeated-span-deduped/01773.jsonl.gz` is 2.29 GB -- output cannot grow
+through a filter, and it did not; the index simply means something different at
+each stage. Compare whole-corpus scans per source, never shard N to shard N.
