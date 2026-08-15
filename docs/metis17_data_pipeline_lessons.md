@@ -1379,47 +1379,59 @@ each stage. Compare whole-corpus scans per source, never shard N to shard N.
 
 ---
 
-## 19. Acquisition bandwidth is site-wide, not per host
+## 19. Two different bandwidth limits, and only one of them is the site
 
-§2a said "1 Gbps is 10.8 TB/day per host ... the only lever is how many hosts
-pull at once." The first half is right and the second is wrong, which matters a
-great deal at 35T.
+An earlier draft of this section claimed the ceiling was site-wide external
+egress and that host count was not a lever. That was wrong, and it was wrong
+because every measurement behind it pulled from HuggingFace. Corrected with the
+operator's account of the 1.6 acquisition, which saturated both login nodes.
 
 Measured on Portage, 2026-08-15:
 
-| | download |
-|---|---|
-| login1, 1 stream | 109 MB/s |
-| compute node, 1 stream | 105 MB/s |
-| compute node, 4 streams | 110 MB/s total |
-| **4 compute nodes, 1 stream each** | **112 MB/s total** |
-| 3 streams, different CDN (PyTorch) | 98 MB/s total |
+| configuration | source | total |
+|---|---|---|
+| login1 alone | PyTorch CDN | 78 MB/s |
+| **login1 + login2 together** | PyTorch CDN | **167 MB/s** |
+| 6 compute nodes, one stream each | PyTorch CDN | 126 MB/s |
+| login1 alone | HuggingFace | 109 MB/s |
+| **login1 + login2 together** | HuggingFace | **107 MB/s** |
+| 4 compute nodes, one stream each | HuggingFace | 112 MB/s |
+| 4 streams, one compute node | HuggingFace | 110 MB/s |
 
-Every configuration lands at the same ~110 MB/s. More streams do not help, more
-hosts do not help, and a different origin does not help, so the ceiling is the
-site's external egress rather than a NIC, a per-connection limit, or one
-publisher's rate limiting.
+Two separate limits, and confusing them is what produced the wrong conclusion.
 
-The interface layout explains why hosts cannot be the lever. Login nodes carry
-bond0 at 25 GbE and hsn0/hsn1 at 200 GbE, but the default route to the internet
-is `ens2f3` at **1 GbE**. Compute nodes *do* have outbound access -- worth
-knowing, it is not documented anywhere -- and route via bond0 at 25 GbE, and
-still measure 105 MB/s. The constraint is upstream of both.
+**Login nodes have independent paths and do add up.** Each routes out through its
+own `ens2f3` at 1 GbE, and two together reached 167 MB/s against a CDN that does
+not throttle. Host count *is* a lever, exactly as §2a said and as the 1.6
+acquisition demonstrated.
 
-**For 1.7 at 35T:** 1.6 acquired 2.41 TB of candidates for 849B tokens, so 35T
-is roughly **100 TB**. At 110 MB/s that is **~10.5 days of continuous transfer**,
-and that is the whole site's bandwidth, shared with everyone else on it.
-Budget two to three weeks of wall clock, and treat acquisition as the schedule's
-critical path rather than something that overlaps preparation.
+**Compute nodes share one NAT gateway and do not add up.** They have outbound
+access -- undocumented, and worth knowing -- routing via bond0 at 25 GbE, but six
+of them together reached 126 MB/s, barely more than two login nodes. The gateway
+is the constraint, not the NIC.
 
-The levers that remain are real, and none of them is host count: ask the site
-whether a data-transfer node with a real uplink exists; prefer publishers that
-offer the same corpus already filtered so fewer bytes cross the wire; start
-acquisition before the recipe is final, since §18 makes the recipe depend on
-what arrives anyway; and drop sources whose yield per downloaded byte is poor,
-which is now measurable per §10f.
+**HuggingFace throttles by IP range, at about 110 MB/s for the whole site.**
+Every HF configuration flattened at that number: one stream, four streams, one
+node, four nodes, two login nodes. The same hosts against the PyTorch CDN scaled
+cleanly. This is the limit that actually binds 1.7, because most of the corpus --
+FineWeb, DCLM, Nemotron-CC, FinePDFs, the Common Pile -- is HF-hosted.
 
----
+**For 1.7 at 35T:** 1.6 acquired 2.41 TB for 849B tokens, so 35T is roughly 100
+TB. At ~110 MB/s for the HF-hosted majority that is **about ten days of
+continuous transfer**, and adding hosts will not move it. Non-HF sources scale
+with login nodes and should be pulled in parallel with, not after, the HF ones.
+
+Levers worth pursuing, in order: ask whether an HF enterprise or mirrored
+arrangement lifts the per-range throttle, since that single number dominates the
+schedule; ask the site whether a data-transfer node exists; prefer publishers
+offering the same corpus pre-filtered so fewer bytes cross the wire; overlap
+acquisition with preparation, since §18 makes the recipe depend on what arrives
+anyway; and drop sources whose yield per downloaded byte is poor, now measurable
+per §10f.
+
+The methodological lesson is the cheaper one: **a single origin cannot measure a
+network.** Every number in the first draft came from HuggingFace, so what got
+characterised as the site's egress was one publisher's rate limit.
 
 ## 20. context_select reads 3.8 TB to emit 18B tokens
 
