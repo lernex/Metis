@@ -1376,3 +1376,84 @@ the documents shard N held at the previous one. On this build
 `eligible/repeated-span-deduped/01773.jsonl.gz` is 2.29 GB -- output cannot grow
 through a filter, and it did not; the index simply means something different at
 each stage. Compare whole-corpus scans per source, never shard N to shard N.
+
+---
+
+## 19. Acquisition bandwidth is site-wide, not per host
+
+§2a said "1 Gbps is 10.8 TB/day per host ... the only lever is how many hosts
+pull at once." The first half is right and the second is wrong, which matters a
+great deal at 35T.
+
+Measured on Portage, 2026-08-15:
+
+| | download |
+|---|---|
+| login1, 1 stream | 109 MB/s |
+| compute node, 1 stream | 105 MB/s |
+| compute node, 4 streams | 110 MB/s total |
+| **4 compute nodes, 1 stream each** | **112 MB/s total** |
+| 3 streams, different CDN (PyTorch) | 98 MB/s total |
+
+Every configuration lands at the same ~110 MB/s. More streams do not help, more
+hosts do not help, and a different origin does not help, so the ceiling is the
+site's external egress rather than a NIC, a per-connection limit, or one
+publisher's rate limiting.
+
+The interface layout explains why hosts cannot be the lever. Login nodes carry
+bond0 at 25 GbE and hsn0/hsn1 at 200 GbE, but the default route to the internet
+is `ens2f3` at **1 GbE**. Compute nodes *do* have outbound access -- worth
+knowing, it is not documented anywhere -- and route via bond0 at 25 GbE, and
+still measure 105 MB/s. The constraint is upstream of both.
+
+**For 1.7 at 35T:** 1.6 acquired 2.41 TB of candidates for 849B tokens, so 35T
+is roughly **100 TB**. At 110 MB/s that is **~10.5 days of continuous transfer**,
+and that is the whole site's bandwidth, shared with everyone else on it.
+Budget two to three weeks of wall clock, and treat acquisition as the schedule's
+critical path rather than something that overlaps preparation.
+
+The levers that remain are real, and none of them is host count: ask the site
+whether a data-transfer node with a real uplink exists; prefer publishers that
+offer the same corpus already filtered so fewer bytes cross the wire; start
+acquisition before the recipe is final, since §18 makes the recipe depend on
+what arrives anyway; and drop sources whose yield per downloaded byte is poor,
+which is now measurable per §10f.
+
+---
+
+## 20. context_select reads 3.8 TB to emit 18B tokens
+
+The long-context stage was projected at 35 minutes from its first pass and took
+nine hours, because it makes three passes rather than one:
+
+```
+pass 1   eligible/final    1.4 TB   @ 473 MB/s   gzip, light work
+pass 2   token-counts      1.2 TB   @  69 MB/s   full JSON parse
+pass 3   token-counts      1.2 TB   @  69 MB/s   full JSON parse again
+```
+
+`build_context_selection` refuses a one-shot iterator outright -- *"context
+selection records must be restartable"* -- because it surveys long-document
+availability per source before selecting against it. `select` reads the same
+shards once and is a third of the cost for forty-five times the output, which is
+the tell: **runtime tracks bytes scanned, not tokens produced.**
+
+Decoding is the cost, and Lustre is not involved. Decompression alone is 143
+MB/s; stdlib `json` through a `TextIOWrapper` drops it to 66. Reading the
+decompressed stream as bytes and parsing with `orjson` measured 138 MB/s on real
+shards, which is now in `_iter_rows` and roughly halves both stages.
+
+Parallelism does not work here and the measurements are worth keeping so nobody
+retries it: a thread pool with ordered prefetch reached 124 MB/s and a process
+pool 101, against 138 serial. Building the record dicts holds the GIL, and
+shipping them between processes costs more than the parse saves. An early
+microbenchmark suggested 273 MB/s with eight threads, but it discarded the rows
+it parsed.
+
+**For 1.7:** persist pass 1's per-source availability summary so pass 2 reads a
+few kilobytes instead of 1.2 TB, and give the token-count stage a compact
+sidecar -- `source_id`, `doc_id`, `token_count`, `context_structure` -- so the
+survey never has to parse document text at all. Together those turn 3.8 TB of
+scanning into about 1.4. Both selection stages are also `tasks_per_job: 1`
+serial reducers over the whole corpus, so §12's shard splitting does not help
+them; they need sharding of their own.
